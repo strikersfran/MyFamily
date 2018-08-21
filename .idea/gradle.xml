@@ -5,11 +5,7 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-<<<<<<< HEAD
-        <option name="gradleHome" value="$APPLICATION_HOME_DIR$/gradle/gradle-4.4" />
-=======
         <option name="gradleJvm" value="#JAVA_HOME" />
->>>>>>> origin/master
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
