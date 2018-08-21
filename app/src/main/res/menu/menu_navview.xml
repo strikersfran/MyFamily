@@ -6,26 +6,33 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_opcion_noticias"
-            android:title="@string/opcion_noticias" />
+            android:icon="@drawable/ic_noticias"
+            android:title="@string/opcion_noticias"></item>
         <item
             android:id="@+id/menu_opcion_chat"
+            android:icon="@drawable/ic_chat"
             android:title="@string/opcion_chat" />
         <item
             android:id="@+id/menu_opcion_mi_perfil"
+            android:icon="@drawable/ic_mi_perfil"
             android:title="@string/opcion_mi_perfil" />
         <item
             android:id="@+id/menu_opcion_mi_familia"
-            android:title="@string/opcion_mi_familia" />
+            android:icon="@drawable/ic_mi_familia"
+            android:title="@string/opcion_mi_familia"></item>
     </group>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_opcion_buscar"
+            android:icon="@drawable/ic_buscar"
             android:title="@string/opcion_buscar" />
         <item
             android:id="@+id/menu_opcion_invitar"
+            android:icon="@drawable/ic_invitar"
             android:title="@string/opcion_invitar" />
         <item
             android:id="@+id/menu_opcion_ajustes"
+            android:icon="@drawable/ic_ajustes"
             android:title="@string/opcion_ajustes" />
     </group>
 </menu>
