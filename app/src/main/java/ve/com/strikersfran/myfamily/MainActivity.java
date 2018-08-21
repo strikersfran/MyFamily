@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
                         Fragment fragment = null;
 
                         switch (menuItem.getItemId()) {
-                            case R.id.menu_opcion_home:
-                                fragment = new HomeFragment();
+                            case R.id.menu_opcion_noticias:
+                                fragment = new NoticiasFragment();
                                 fragmentTransaction = true;
                                 break;
-                            case R.id.menu_opcion_contactos:
-                                fragment = new ContactosFragment();
+                            case R.id.menu_opcion_chat:
+                                fragment = new ChatFragment();
                                 fragmentTransaction = true;
                                 break;
                         }
