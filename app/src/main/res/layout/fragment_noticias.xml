@@ -6,9 +6,18 @@
     tools:context=".NoticiasFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Mi pagina principal" />
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/card_noticias"
+            android:layout_width="match_parent"></include>
+
+        <include
+            layout="@layout/card_test"
+            android:layout_width="match_parent"></include>
+    </LinearLayout>
 
 </FrameLayout>
