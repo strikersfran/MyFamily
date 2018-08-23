@@ -88,11 +88,11 @@ public class NoticiasFragment extends Fragment {
         List items = new ArrayList();
 
         items.add(new Noticias("file:///android_asset/avatar1.jpg","Sara Lemus","02 diciembre 2017",
-                "file://android_asset/noticia1.jpg","",0,1,6));
+                "file:///android_asset/noticia1.jpg","",0,1,6));
         items.add(new Noticias("file:///android_asset/avatar3.jpg","Francisco Carrión","02 febrero 2018",
-                "file://android_asset/noticia2.jpg","",0,1,6));
+                "file:///android_asset/noticia2.jpg","",0,1,6));
         items.add(new Noticias("file:///android_asset/avatar2.jpg","Angel David Carrión","15 diciembre 2017",
-                "file://android_asset/noticia3.jpg","",0,1,6));
+                "file:///android_asset/noticia3.jpg","",0,1,6));
 
         // Obtener el Recycler
         recycler = (RecyclerView) myFragmentView.findViewById(R.id.rv_noticias);
