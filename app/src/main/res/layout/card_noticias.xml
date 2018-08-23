@@ -14,18 +14,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_noticias"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cardview_light_background"
-            android:orientation="horizontal"
-            android:padding="3dp">
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/blank_color">
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                card_view:srcCompat="@mipmap/ic_face" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_user"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/tablet" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,6 +36,7 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
                     android:layout_weight="1"
                     android:gravity="bottom"
                     android:paddingLeft="2dp"
@@ -49,6 +49,7 @@
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
                     android:layout_weight="1"
                     android:paddingLeft="2dp"
                     android:text="01 de Febrero 2018"
@@ -56,11 +57,10 @@
                     android:textSize="12sp"
                     android:textStyle="italic" />
             </LinearLayout>
-
-        </LinearLayout>
+        </android.support.v7.widget.Toolbar>
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/card_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_alignParentLeft="true"
@@ -69,9 +69,24 @@
             android:scaleType="centerCrop"
             card_view:srcCompat="@drawable/tablet" />
 
+        <TextView
+            android:id="@+id/card_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/blank_color"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:minHeight="100dp"
+            android:text="@string/text_prueba"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/blank_color"
             android:orientation="horizontal"
             android:paddingBottom="2dp"
             android:paddingTop="3dp">

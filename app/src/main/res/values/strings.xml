@@ -16,4 +16,8 @@
 
     <string name="text_prueba">Texto de prueba para una carview tipo texto</string>
     <string name="usaurio_test">Sara Lemus</string>
+
+    <string name="opcion_guardar">Guardar</string>
+    <string name="opcion_ver_pub">Ver Publicación</string>
+    <string name="opcion_no_ver_pub">No Querio Ver</string>
 </resources>

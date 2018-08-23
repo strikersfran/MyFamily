@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/opcion_guardar"
+          android:id="@+id/opn_guardar"
+        />
+    <item android:title="@string/opcion_ver_pub"
+            android:id="@+id/opn_ver"/>
+    <item android:title="@string/opcion_no_ver_pub"
+            android:id="@+id/opn_nover"/>
+</menu>

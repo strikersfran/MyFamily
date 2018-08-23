@@ -3,9 +3,15 @@ package ve.com.strikersfran.myfamily;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -57,13 +63,44 @@ public class NoticiasFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View myFragmentView = inflater.inflate(R.layout.fragment_noticias, container, false);
+
+        Toolbar tbCard = (Toolbar) myFragmentView.findViewById(R.id.toolbar_noticias);
+
+        CircleImageView imageView = (CircleImageView) myFragmentView.findViewById(R.id.image);
+        Picasso.with(myFragmentView.getApplicationContext()).load(imageUrl).into(imageView);
+
+        tbCard.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.opn_guardar:
+                                Log.i("Toolbar noticias", "Acción Noticias Guardar");
+                                break;
+                            case R.id.opn_ver:
+                                Log.i("Toolbar noticias", "Acción Noticias Ver Publicacion");
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+
+        tbCard.inflateMenu(R.menu.menu_card_noticias);
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_noticias, container, false);
+        return myFragmentView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
