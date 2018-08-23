@@ -3,6 +3,8 @@ package ve.com.strikersfran.myfamily;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
 import android.util.Log;
@@ -12,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,6 +38,10 @@ public class NoticiasFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recycler;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager lManager;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,10 +84,32 @@ public class NoticiasFragment extends Fragment {
 
         View myFragmentView = inflater.inflate(R.layout.fragment_noticias, container, false);
 
-        Toolbar tbCard = (Toolbar) myFragmentView.findViewById(R.id.toolbar_noticias);
+        // Inicializar Animes
+        List items = new ArrayList();
 
-        CircleImageView imageView = (CircleImageView) myFragmentView.findViewById(R.id.image);
-        Picasso.with(getActivity().getApplicationContext()).load(R.drawable.contacto).into(imageView);
+        items.add(new Noticias("file:///android_asset/avatar1.jpg","Sara Lemus","02 diciembre 2017",
+                "file://android_asset/noticia1.jpg","",0,1,6));
+        items.add(new Noticias("file:///android_asset/avatar3.jpg","Francisco Carrión","02 febrero 2018",
+                "file://android_asset/noticia2.jpg","",0,1,6));
+        items.add(new Noticias("file:///android_asset/avatar2.jpg","Angel David Carrión","15 diciembre 2017",
+                "file://android_asset/noticia3.jpg","",0,1,6));
+
+        // Obtener el Recycler
+        recycler = (RecyclerView) myFragmentView.findViewById(R.id.rv_noticias);
+        recycler.setHasFixedSize(true);
+
+        // Usar un administrador para LinearLayout
+        lManager = new LinearLayoutManager(getContext());
+        recycler.setLayoutManager(lManager);
+
+        // Crear un nuevo adaptador
+        adapter = new NoticiasAdapter(items);
+        recycler.setAdapter(adapter);
+
+        /*Toolbar tbCard = (Toolbar) myFragmentView.findViewById(R.id.toolbar_noticias);
+
+        CircleImageView imageView = (CircleImageView) myFragmentView.findViewById(R.id.image_user);
+        Picasso.with(getContext()).load(R.drawable.contacto).into(imageView);
 
         tbCard.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
@@ -98,7 +129,7 @@ public class NoticiasFragment extends Fragment {
                     }
                 });
 
-        tbCard.inflateMenu(R.menu.menu_card_noticias);
+        tbCard.inflateMenu(R.menu.menu_card_noticias);*/
 
 
         // Inflate the layout for this fragment

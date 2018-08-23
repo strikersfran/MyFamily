@@ -6,18 +6,12 @@
     tools:context=".NoticiasFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rv_noticias"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include
-            layout="@layout/card_noticias"
-            android:layout_width="match_parent"></include>
-
-        <include
-            layout="@layout/card_test"
-            android:layout_width="match_parent"></include>
-    </LinearLayout>
+        android:padding="3dp"
+        android:scrollbars="vertical" />
 
 </FrameLayout>
