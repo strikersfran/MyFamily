@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -76,7 +78,7 @@ public class NoticiasFragment extends Fragment {
         Toolbar tbCard = (Toolbar) myFragmentView.findViewById(R.id.toolbar_noticias);
 
         CircleImageView imageView = (CircleImageView) myFragmentView.findViewById(R.id.image);
-        Picasso.with(myFragmentView.getApplicationContext()).load(imageUrl).into(imageView);
+        Picasso.with(getActivity().getApplicationContext()).load(R.drawable.contacto).into(imageView);
 
         tbCard.setOnMenuItemClickListener(
                 new Toolbar.OnMenuItemClickListener() {
