@@ -1,6 +1,7 @@
 package ve.com.strikersfran.myfamily;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -9,11 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
+    private Fragment mFragment = null;
     private NavigationView mNavView;
 
     @Override
@@ -35,39 +38,57 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-                        boolean fragmentTransaction = false;
-                        Fragment fragment = null;
 
                         switch (menuItem.getItemId()) {
                             case R.id.menu_opcion_noticias:
-                                fragment = new NoticiasFragment();
-                                fragmentTransaction = true;
+                                mFragment = new NoticiasFragment();
+                                //fragmentTransaction = true;
                                 break;
                             case R.id.menu_opcion_chat:
-                                fragment = new ChatFragment();
-                                fragmentTransaction = true;
+                                mFragment = new ChatsFragment();
+                                //fragmentTransaction = true;
                                 break;
                             case R.id.menu_opcion_mi_familia:
-                                fragment = new MiFamiliaFragment();
-                                fragmentTransaction = true;
+                                mFragment = new MiFamiliaFragment();
+                                //fragmentTransaction = true;
                                 break;
                         }
 
-                        if(fragmentTransaction) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.content_frame, fragment)
-                                    .commit();
-
-                            menuItem.setChecked(true);
-                            getSupportActionBar().setTitle(menuItem.getTitle());
-                        }
+                        menuItem.setChecked(true);
+                        getSupportActionBar().setTitle(menuItem.getTitle());
 
                         mDrawerLayout.closeDrawers();
-
                         return true;
                     }
                 }
         );
+
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                if(mFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, mFragment)
+                            .commit();
+                    mFragment = null;
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
     }
 
     @Override

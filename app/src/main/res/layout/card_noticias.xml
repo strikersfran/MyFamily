@@ -19,11 +19,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/blank_color">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/image_user"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
-                android:src="@drawable/tablet" />
+                android:src="@drawable/tablet"
+                app:civ_border_color="@color/primary_color"
+                app:civ_border_width="1dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,6 +84,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,29 +93,59 @@
             android:paddingBottom="2dp"
             android:paddingTop="3dp">
 
-            <ImageView
-                android:id="@+id/imageButton"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                card_view:srcCompat="@drawable/ic_chat" />
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/imageButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                card_view:srcCompat="@android:drawable/btn_star" />
+                <ImageView
+                    android:id="@+id/imagen_me_gusta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    card_view:srcCompat="@drawable/ic_megusta" />
 
-            <ImageView
-                android:id="@+id/imageButton3"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignStart="@+id/imagen_me_gusta"
+                    android:layout_centerHorizontal="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="40dp"
+                    android:text="999" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                card_view:srcCompat="@drawable/ic_invitar" />
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imagen_comentarios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    card_view:srcCompat="@drawable/ic_comentarios" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignStart="@+id/imagen_comentarios"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="40dp"
+                    android:text="999" />
+            </RelativeLayout>
+
         </LinearLayout>
 
     </LinearLayout>

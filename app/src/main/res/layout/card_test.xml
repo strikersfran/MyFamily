@@ -82,7 +82,7 @@
             android:paddingTop="3dp">
 
             <ImageView
-                android:id="@+id/imageButton"
+                android:id="@+id/imagen_me_gusta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -90,7 +90,7 @@
                 card_view:srcCompat="@drawable/ic_chat" />
 
             <ImageView
-                android:id="@+id/imageButton2"
+                android:id="@+id/imagen_comentarios"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
