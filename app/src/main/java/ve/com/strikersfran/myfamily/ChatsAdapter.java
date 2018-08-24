@@ -1,11 +1,14 @@
 package ve.com.strikersfran.myfamily;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -22,6 +25,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatsViewHol
 
     private List<Chats> items;
     private Context context;
+    private ImageView showImage;
 
     public ChatsAdapter(List<Chats> items) {
         this.items = items;
@@ -44,6 +48,23 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatsViewHol
         holder.nombreUser.setText(items.get(position).getNombreUser());
         holder.fecha.setText(items.get(position).getFecha());
         holder.mensaje.setText(items.get(position).getUltimoMensaje());
+
+        showImage = holder.imagenUser;
+
+        showImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View v = LayoutInflater.from(context).inflate(R.layout.imagen_show
+                        , null);
+                ImageView image = (ImageView) v.findViewById(R.id.imagen_show);
+
+                //Picasso.with(context).load(view).into(image);
+                Dialog settingsDialog = new Dialog(context);
+                settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                settingsDialog.setContentView(v);
+                settingsDialog.show();
+            }
+        });
     }
 
     @Override
@@ -65,6 +86,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatsViewHol
             nombreUser = (TextView) itemView.findViewById(R.id.lc_nombre_user);
             fecha = (TextView) itemView.findViewById(R.id.lc_fecha);
             mensaje = (TextView) itemView.findViewById(R.id.lc_mensaje);
+
         }
     }
 }

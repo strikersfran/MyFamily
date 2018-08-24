@@ -9,6 +9,7 @@
         android:id="@+id/lc_imagen_user"
         android:layout_width="68dp"
         android:layout_height="68dp"
+        android:clickable="true"
         android:padding="2dp"
         android:src="@drawable/tablet"
         app:civ_border_color="@color/primary_color"
