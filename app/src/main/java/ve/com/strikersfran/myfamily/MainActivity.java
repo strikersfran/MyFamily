@@ -47,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
                                 fragment = new ChatFragment();
                                 fragmentTransaction = true;
                                 break;
+                            case R.id.menu_opcion_mi_familia:
+                                fragment = new MiFamiliaFragment();
+                                fragmentTransaction = true;
+                                break;
                         }
 
                         if(fragmentTransaction) {

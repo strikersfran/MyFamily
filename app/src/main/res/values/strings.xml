@@ -20,4 +20,9 @@
     <string name="opcion_guardar">Guardar</string>
     <string name="opcion_ver_pub">Ver Publicación</string>
     <string name="opcion_no_ver_pub">No Querio Ver</string>
+
+    <string name="opcion_ini_chat">Iniciar Chat</string>
+    <string name="opcion_eliminar">Eliminar</string>
+    <string name="opcion_ver_perfil">Ver Perfil</string>
+
 </resources>
