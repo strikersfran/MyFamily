@@ -22,7 +22,7 @@ public class BienvenidaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BienvenidaActivity.this,LoginActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
 
@@ -31,7 +31,7 @@ public class BienvenidaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BienvenidaActivity.this,RegistrarActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
     }

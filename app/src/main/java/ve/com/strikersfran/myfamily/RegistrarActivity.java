@@ -58,9 +58,6 @@ public class RegistrarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 registrar();
-                /*Intent intent = new Intent(RegistrarActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();*/
             }
         });
 

@@ -27,7 +27,7 @@
 
     <string name="bienvenida">Bienvenidos a</string>
     <string name="login">Iniciar Sesión</string>
-    <string name="registro">Registrarse</string>
+    <string name="registro">¿Eres Nuevo? Registrese Aqui</string>
     <string name="logo">Logo</string>
     <string name="lb_email">Dirección de correo</string>
     <string name="lb_clave">Contraseña</string>
