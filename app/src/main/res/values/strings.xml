@@ -25,4 +25,30 @@
     <string name="opcion_eliminar">Eliminar</string>
     <string name="opcion_ver_perfil">Ver Perfil</string>
 
+    <string name="bienvenida">Bienvenidos a</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="registro">Registrarse</string>
+    <string name="logo">Logo</string>
+    <string name="lb_email">Dirección de correo</string>
+    <string name="lb_clave">Contraseña</string>
+    <string name="btn_entrar">Ingresar</string>
+    <string name="recuperar_contrasena">¿Olvidaste tu Contraseña?</string>
+    <string name="txt_nombre">Nombre</string>
+    <string name="primer_nombre">Primer Nombre</string>
+    <string name="segundo_nombre">Segundo Nombre</string>
+    <string name="primer_apellido">Primer Apellido</string>
+    <string name="segundo_apellido">Segundo Apellido</string>
+    <string name="rp_contrasena">Repetir Contraseña</string>
+    <string name="txt_salir">Salir</string>
+    <string name="btn_recuperar">Recuperar</string>
+    <string name="txt_recuperar">Recuperar Contraseña</string>
+
+    <string name="new_registro">Nuevo Registro</string>
+    <string name="requerido">Esta campo es requerido</string>
+    <string name="no_coinciden">Las Contraseñas no coinciden</string>
+    <string name="error_email">Invalido email debe contener @</string>
+    <string name="error_user_exists">Ya existe un usuarios registrado con ese email</string>
+    <string name="error_weak_password">La contraseña dada no es válida</string>
+    <string name="error_invalid_credenciales">Email y/o Contraseña no validos</string>
+
 </resources>

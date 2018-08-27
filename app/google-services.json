@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "637913113934",
+    "firebase_url": "https://myfamily-f79e7.firebaseio.com",
+    "project_id": "myfamily-f79e7",
+    "storage_bucket": "myfamily-f79e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637913113934:android:cd9950b5ac14ffe1",
+        "android_client_info": {
+          "package_name": "ve.com.strikersfran.myfamily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637913113934-pn9bg4k7u7l9066fho4u6pfpc6er482v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-kfjxag7H7fQMpXaotQwHOeWCj75v1qo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

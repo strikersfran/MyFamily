@@ -1,7 +1,11 @@
 package ve.com.strikersfran.myfamily;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,7 +46,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatsViewHol
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChatsViewHolder holder, final int position) {
 
         Picasso.with(context).load(items.get(position).getImagenUser()).into(holder.imagenUser);
         holder.nombreUser.setText(items.get(position).getNombreUser());
@@ -58,7 +62,13 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatsViewHol
                         , null);
                 ImageView image = (ImageView) v.findViewById(R.id.imagen_show);
 
-                //Picasso.with(context).load(view).into(image);
+                //Bitmap bm = ((BitmapDrawable) showImage.getDrawable()).getBitmap();
+
+                //image.setImageBitmap(bm);
+                Picasso.with(context).load(items.get(position).getImagenUser()).into(image);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
                 Dialog settingsDialog = new Dialog(context);
                 settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                 settingsDialog.setContentView(v);
