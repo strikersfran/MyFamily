@@ -50,5 +50,6 @@
     <string name="error_user_exists">Ya existe un usuarios registrado con ese email</string>
     <string name="error_weak_password">La contraseña dada no es válida</string>
     <string name="error_invalid_credenciales">Email y/o Contraseña no validos</string>
+    <string name="search_familiar">Buscar Familiar</string>
 
 </resources>

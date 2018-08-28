@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BuscarFamiliarFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/fb_btn_buscar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/search_text_border"
+            android:src="@drawable/ic_buscar" />
+
+        <EditText
+            android:id="@+id/fb_filtro"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/fb_btn_buscar"
+            android:background="@drawable/search_text_border"
+            android:ems="10"
+            android:hint="@string/search_familiar"
+            android:inputType="textPersonName"
+            android:minLines="1" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="60dp"
+            android:background="@color/primary_color" />
+
+        <ProgressBar
+            android:id="@+id/fb_progress_bar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_buscar_familiar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/divider"
+            android:layout_marginTop="10dp" >
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+</FrameLayout>

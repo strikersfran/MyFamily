@@ -7,11 +7,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class BienvenidaActivity extends AppCompatActivity {
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Get Firebase auth instance
+        auth = FirebaseAuth.getInstance();
+
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(BienvenidaActivity.this, MainActivity.class));
+            finish();
+        }
+
         setContentView(R.layout.activity_bienvenida);
 
         Button btnIniciar = (Button) findViewById(R.id.btn_iniciar);

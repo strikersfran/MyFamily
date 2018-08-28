@@ -3,6 +3,7 @@ package ve.com.strikersfran.myfamily;
 
 import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ public class MiFamiliaFragment extends Fragment {
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private GridLayoutManager lManager;
+    private FloatingActionButton mAddFamilia;
 
     public MiFamiliaFragment() {
         // Required empty public constructor
@@ -32,7 +34,21 @@ public class MiFamiliaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View myFragmentView = inflater.inflate(R.layout.fragment_mi_familia, container, false);
+        final View myFragmentView = inflater.inflate(R.layout.fragment_mi_familia, container, false);
+
+        mAddFamilia = (FloatingActionButton) myFragmentView.findViewById(R.id.fab_add_familia);
+
+        mAddFamilia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment mFragment = new BuscarFamiliarFragment();
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame, mFragment)
+                        .commit();
+                //getSupportActionBar().setTitle("Buscar Familiar");
+            }
+        });
 
         List items = new ArrayList();
 
@@ -54,6 +70,10 @@ public class MiFamiliaFragment extends Fragment {
         recycler.setAdapter(adapter);
 
         return myFragmentView;
+    }
+
+    public void findFamiliar(){
+
     }
 
 }
