@@ -23,6 +23,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import ve.com.strikersfran.myfamily.data.SharedPreferenceHelper;
+import ve.com.strikersfran.myfamily.data.StaticConfig;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authListener;
     private TextView mUserName;
     private TextView mUserEmail;
+    private CircleImageView mUserImagen;
     private DatabaseReference mUserRef;
 
     @Override
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         mUserName = (TextView) header.findViewById(R.id.m_user_name);
         mUserEmail = (TextView) header.findViewById(R.id.m_user_email);
+        mUserImagen = (CircleImageView) header.findViewById(R.id.m_image_user);
 
         mUserEmail.setText(user.getEmail().toString());
 
@@ -81,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case R.id.menu_opcion_mi_familia:
                                 mFragment = new MiFamiliaFragment();
+                                //fragmentTransaction = true;
+                                break;
+                            case R.id.menu_opcion_mi_perfil:
+                                mFragment = new ProfileFragment();
                                 //fragmentTransaction = true;
                                 break;
                         }
@@ -132,16 +142,27 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
                 else{
+                    StaticConfig.UID=user.getUid();
                     mUserRef = database.getReference("users").child(user.getUid());
                     mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             //cambiar los datos en el menu
                             String nombre = dataSnapshot.child("nombre").getValue().toString();
-                            String apellido = dataSnapshot.child("primerApellido").getValue().toString();
+                            String papellido = dataSnapshot.child("primerApellido").getValue().toString();
+                            String sapellido = dataSnapshot.child("segundoApellido").getValue().toString();
+                            String email = dataSnapshot.child("email").getValue().toString();
+                            String avatar = dataSnapshot.child("avatar").getValue().toString();
 
-                            mUserName.setText(nombre +" "+apellido);
-                            //mUserEmail.setText(email);
+                            User userInfo = new User(nombre,papellido,sapellido,avatar,email);
+
+                            SharedPreferenceHelper.getInstance(MainActivity.this).saveUserInfo(userInfo);
+
+                            mUserName.setText(nombre +" "+papellido);
+                            mUserEmail.setText(email);
+                            if(avatar.contentEquals("default")){
+                                mUserImagen.setImageResource(R.drawable.avatar_default);
+                            }
                         }
 
                         @Override

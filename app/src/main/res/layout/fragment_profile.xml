@@ -1,0 +1,283 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="ve.com.strikersfran.myfamily.ProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/border_gris"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/fp_avatar"
+                    android:layout_width="104dp"
+                    android:layout_height="104dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:clickable="true"
+                    android:src="@drawable/avatar_default"
+                    app:civ_border_color="@color/primary_color"
+                    app:civ_border_width="1dp"
+                    tools:layout_editor_absoluteY="567dp" />
+
+                <ImageButton
+                    android:id="@+id/fp_edit_foto"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignBottom="@+id/fp_avatar"
+                    android:layout_alignEnd="@+id/fp_avatar"
+                    android:background="@color/cardview_shadow_end_color"
+                    android:src="@drawable/ic_edit_foto" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primary_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nombres"
+                    android:textColor="@color/primary_color"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/fp_nombres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nombres"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/fp_btn_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_edit" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Primer Apellido"
+                    android:textColor="@color/primary_color"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/fp_primer_apellido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Primer"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/fp_btn_papellido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_edit" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView131"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Segundo Apellido"
+                    android:textColor="@color/primary_color"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/fp_segundo_apellido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Segundo"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/fp_btn_sapellido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_edit" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dirección de Correo"
+                    android:textColor="@color/primary_color"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/fp_correo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Correo"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/fp_btn_correo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/border"
+                android:src="@drawable/ic_edit" />
+
+        </LinearLayout>
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/primary_color" />
+
+        <LinearLayout
+            android:id="@+id/fp_cambiar_contrasena"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:paddingStart="20dp">
+
+            <ImageButton
+                android:id="@+id/imageButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview_shadow_end_color"
+                android:src="@drawable/ic_cambiar_password" />
+
+            <TextView
+                android:id="@+id/textView80"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Cambiar Contraseña"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fp_salir"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:orientation="horizontal"
+            android:paddingStart="20dp">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/cardview_shadow_end_color"
+                android:src="@drawable/ic_salir" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Salir"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>

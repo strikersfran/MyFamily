@@ -82,7 +82,9 @@ public class BuscarFamiliarFragment extends Fragment {
                                     String nombre = singleSnapshot.child("nombre").getValue(String.class);
                                     String pApellido = singleSnapshot.child("primerApellido").getValue(String.class);
                                     String sApellido = singleSnapshot.child("segundoApellido").getValue(String.class);
-                                    mItems.add(new User(nombre,pApellido,sApellido));
+                                    String avatar = singleSnapshot.child("avatar").getValue(String.class);
+                                    String email = singleSnapshot.child("email").getValue(String.class);
+                                    mItems.add(new User(nombre,pApellido,sApellido,avatar,email));
                                 }
 
                                 // Obtener el Recycler

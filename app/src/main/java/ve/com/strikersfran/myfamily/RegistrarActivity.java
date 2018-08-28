@@ -80,7 +80,7 @@ public class RegistrarActivity extends AppCompatActivity {
         final String nombre = mNombre.getText().toString().trim();
         final String pApellido = mPrimerApellido.getText().toString().trim();
         final String sApellido = mSegundoApellido.getText().toString().trim();
-        String email = mEmail.getText().toString().trim();
+        final String email = mEmail.getText().toString().trim();
         String contrasena = mContrasena.getText().toString().trim();
         String rContrasena = mRepiteContrasena.getText().toString().trim();
 
@@ -152,7 +152,7 @@ public class RegistrarActivity extends AppCompatActivity {
                             } else {
                                 FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
                                 //String uid = fUser.getUid();
-                                User user = new User(nombre,pApellido,sApellido);
+                                User user = new User(nombre,pApellido,sApellido,"default",email);
 
                                 mDatabase.child("users").child(fUser.getUid()).setValue(user);
                                 mProgressBar.setVisibility(View.GONE);
