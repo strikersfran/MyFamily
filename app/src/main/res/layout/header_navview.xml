@@ -15,7 +15,7 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="100dp"
         android:layout_marginLeft="10dp"
         android:src="@drawable/avatar_default"
         app:civ_border_color="@color/blank_color"
@@ -26,18 +26,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginLeft="10dp"
         android:text="@string/usuario"
         android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/m_user_apellidos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="35dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/usuario"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
+        android:textColor="@color/border_gris"
+        android:textSize="18sp" />
+
+    <TextView
         android:id="@+id/m_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         android:layout_marginLeft="10dp"
         android:text="carrionfn@gmail.com"
         android:textColor="@color/blank_color"

@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     private TextView mUserName;
+    private TextView mUserApellidos;
     private TextView mUserEmail;
     private CircleImageView mUserImagen;
     private DatabaseReference mUserRef;
@@ -66,12 +67,15 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        prefHelper = SharedPreferenceHelper.getInstance(MainActivity.this);
+
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         NavigationView mNavView = (NavigationView) findViewById(R.id.navview);
 
         View header=mNavView.getHeaderView(0);
 
         mUserName = (TextView) header.findViewById(R.id.m_user_name);
+        mUserApellidos = (TextView) header.findViewById(R.id.m_user_apellidos);
         mUserEmail = (TextView) header.findViewById(R.id.m_user_email);
         mUserImagen = (CircleImageView) header.findViewById(R.id.m_image_user);
 
@@ -138,7 +142,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onDrawerStateChanged(int newState) {
-
+                User userInfo = prefHelper.getUserInfo();
+                mUserName.setText(userInfo.getNombre());
+                mUserApellidos.setText(userInfo.getPrimerApellido()+" "+userInfo.getSegundoApellido());
+                mUserEmail.setText(userInfo.getEmail());
+                setImageAvatar(MainActivity.this,userInfo.getAvatar());
             }
         });
 
@@ -147,46 +155,16 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 }
                 else{
-                    prefHelper = SharedPreferenceHelper.getInstance(MainActivity.this);
+                    StaticConfig.UID=user.getUid();
                     User userInfo = prefHelper.getUserInfo();
-                    mUserName.setText(userInfo.getNombre() +" "+userInfo.getPrimerApellido());
+                    mUserName.setText(userInfo.getNombre());
+                    mUserApellidos.setText(userInfo.getPrimerApellido()+" "+userInfo.getSegundoApellido());
                     mUserEmail.setText(userInfo.getEmail());
                     setImageAvatar(MainActivity.this,userInfo.getAvatar());
-
-                    /*StaticConfig.UID=user.getUid();
-                    mUserRef = database.getReference("users").child(user.getUid());
-                    mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            //cambiar los datos en el menu
-                            String nombre = dataSnapshot.child("nombre").getValue().toString();
-                            String papellido = dataSnapshot.child("primerApellido").getValue().toString();
-                            String sapellido = dataSnapshot.child("segundoApellido").getValue().toString();
-                            String email = dataSnapshot.child("email").getValue().toString();
-                            String avatar = dataSnapshot.child("avatar").getValue().toString();
-
-                            User userInfo = new User(nombre,papellido,sapellido,avatar,email);
-
-                            SharedPreferenceHelper.getInstance(MainActivity.this).saveUserInfo(userInfo);
-
-                            mUserName.setText(nombre +" "+papellido);
-                            mUserEmail.setText(email);
-                            if(avatar.contentEquals("default")){
-                                mUserImagen.setImageResource(R.drawable.avatar_default);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.e("ERROR", databaseError.getMessage());
-                        }
-                    });*/
                 }
             }
         };

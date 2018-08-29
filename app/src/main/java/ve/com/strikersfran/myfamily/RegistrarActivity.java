@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import ve.com.strikersfran.myfamily.util.ValidarInput;
+
 public class RegistrarActivity extends AppCompatActivity {
 
     private EditText mNombre,mPrimerApellido,mSegundoApellido;
@@ -103,7 +105,7 @@ public class RegistrarActivity extends AppCompatActivity {
             mEmail.setError(getString(R.string.requerido));
             focusView = mEmail;
             cancel = true;
-        }else if(!isEmailValid(email)){
+        }else if(!ValidarInput.isEmailValid(email)){
             mEmail.setError(getString(R.string.error_email));
             focusView = mEmail;
             cancel = true;
@@ -163,11 +165,6 @@ public class RegistrarActivity extends AppCompatActivity {
                     });
         }
 
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
     }
 
     public void resetError(){

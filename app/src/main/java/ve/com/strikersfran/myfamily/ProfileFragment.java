@@ -10,14 +10,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,11 +38,14 @@ import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ve.com.strikersfran.myfamily.data.SharedPreferenceHelper;
 import ve.com.strikersfran.myfamily.data.StaticConfig;
 import ve.com.strikersfran.myfamily.util.ImageUtils;
+import ve.com.strikersfran.myfamily.util.ValidarInput;
 
 
 /**
@@ -49,10 +55,17 @@ public class ProfileFragment extends Fragment {
 
     private User myAccount;
     private CircleImageView avatar;
+    private TextView nombres;
+    private TextView papellido;
+    private TextView sapellido;
+    private TextView email;
     private static final int PICK_IMAGE = 1994;
     private Context context;
     private DatabaseReference userDB;
     private LovelyProgressDialog mProgresDialog;
+    private DatabaseReference mDatabase;
+    private LovelyCustomDialog mCustomDialog;
+
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -63,6 +76,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         userDB = FirebaseDatabase.getInstance().getReference().child("users").child(StaticConfig.UID);
 
         // Inflate the layout for this fragment
@@ -72,10 +86,11 @@ public class ProfileFragment extends Fragment {
         mProgresDialog = new LovelyProgressDialog(context);
 
         avatar = (CircleImageView) myFragmentView.findViewById(R.id.fp_avatar);
-        TextView nombres = (TextView) myFragmentView.findViewById(R.id.fp_nombres);
-        TextView papellido = (TextView) myFragmentView.findViewById(R.id.fp_primer_apellido);
-        TextView sapellido = (TextView) myFragmentView.findViewById(R.id.fp_segundo_apellido);
-        TextView email = (TextView) myFragmentView.findViewById(R.id.fp_correo);
+        nombres = (TextView) myFragmentView.findViewById(R.id.fp_nombres);
+        papellido = (TextView) myFragmentView.findViewById(R.id.fp_primer_apellido);
+        sapellido = (TextView) myFragmentView.findViewById(R.id.fp_segundo_apellido);
+        email = (TextView) myFragmentView.findViewById(R.id.fp_correo);
+
         ImageButton editAvatar = (ImageButton) myFragmentView.findViewById(R.id.fp_edit_foto);
 
         ImageButton editDatos = (ImageButton) myFragmentView.findViewById(R.id.fp_btn_edit);
@@ -93,6 +108,7 @@ public class ProfileFragment extends Fragment {
         sapellido.setText(myAccount.getSegundoApellido());
         email.setText(myAccount.getEmail());
 
+        //evento para el boton salir o logout
         salir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,6 +117,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        //evento para editar el avatar
         editAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,29 +143,145 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        //evento para editar los datos
+
         editDatos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 View dialogView = inflater.inflate(R.layout.edit_datos_profile, null);
-                final LovelyCustomDialog customDialog;
-                customDialog= new LovelyCustomDialog(context);
 
-                customDialog.setView(R.layout.edit_datos_profile)
+                final EditText enombre = dialogView.findViewById(R.id.edp_nombre);
+                final EditText epapellido = dialogView.findViewById(R.id.edp_primer_apellido);
+                final EditText esapellido = dialogView.findViewById(R.id.edp_segundo_apellido);
+                final EditText eemail = dialogView.findViewById(R.id.edp_email);
+
+                enombre.setText(myAccount.getNombre());
+                epapellido.setText(myAccount.getPrimerApellido());
+                esapellido.setText(myAccount.getSegundoApellido());
+                eemail.setText(myAccount.getEmail());
+
+                mCustomDialog= new LovelyCustomDialog(context);
+
+                mCustomDialog.setView(dialogView)
                         .setTopColorRes(R.color.primary_color)
                         .setTitle("Editar mis datos")
                         .setListener(R.id.edp_btn_aceptar, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                customDialog.dismiss();
+                            updateDatos(enombre,epapellido,esapellido,eemail);
                             }
                         })
+                        .setListener(R.id.edp_btn_cancelar, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mCustomDialog.dismiss();
+                            }
+                        })
+                        .setCancelable(false)
                         .show();
             }
         });
 
 
         return myFragmentView;
+    }
+
+    private void updateDatos(EditText n,EditText pa, EditText sa,EditText e){
+
+        //validar datos
+        boolean cancel = false;
+        View focusView = null;
+
+        //obtener valores de los campos
+        final String nombre = n.getText().toString().trim();
+        final String pApellido = pa.getText().toString().trim();
+        final String sApellido = sa.getText().toString().trim();
+        final String emails = e.getText().toString().trim();
+
+        if(TextUtils.isEmpty(nombre)){
+            n.setError(getString(R.string.requerido));
+            focusView=n;
+            cancel = true;
+        }else if(TextUtils.isEmpty(pApellido)){
+            pa.setError(getString(R.string.requerido));
+            focusView = pa;
+            cancel = true;
+        }else if(TextUtils.isEmpty(sApellido)){
+            sa.setError(getString(R.string.requerido));
+            focusView = sa;
+            cancel = true;
+        }else if(TextUtils.isEmpty(emails)){
+            e.setError(getString(R.string.requerido));
+            focusView = e;
+            cancel = true;
+        }else if(!ValidarInput.isEmailValid(emails)){
+            e.setError(getString(R.string.error_email));
+            focusView = e;
+            cancel = true;
+        }
+
+        if(cancel){
+            focusView.requestFocus();
+        }
+        else {
+
+            mCustomDialog.dismiss();
+
+            final User myAccountUpdate = new User(nombre,pApellido,sApellido,myAccount.getAvatar(),emails);
+
+            mProgresDialog.setCancelable(false)
+                    .setTitle("Actualizando datos....")
+                    .setTopColorRes(R.color.primary_color)
+                    .show();
+
+            Map<String, Object> userValues = myAccountUpdate.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+
+            childUpdates.put("/users/"+StaticConfig.UID,userValues);
+            mDatabase.updateChildren(childUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()) {
+                        mProgresDialog.dismiss();
+                        SharedPreferenceHelper preferenceHelper = SharedPreferenceHelper.getInstance(context);
+                        preferenceHelper.saveUserInfo(myAccountUpdate);
+
+                        //actualizar el objeto del user
+                        myAccount.setNombre(nombre);
+                        myAccount.setPrimerApellido(pApellido);
+                        myAccount.setSegundoApellido(sApellido);
+                        myAccount.setEmail(emails);
+
+                        //actualizar los datos en el view del profile
+                        nombres.setText(nombre);
+                        papellido.setText(pApellido);
+                        sapellido.setText(sApellido);
+                        email.setText(emails);
+
+                        new LovelyInfoDialog(context)
+                                .setTopColorRes(R.color.primary_color)
+                                .setTitle("Felicidades !!")
+                                .setMessage("Los datos fueron actualizados correctamente!")
+                                .show();
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    mProgresDialog.dismiss();
+                    Log.e("Actualizando Perfil", "Actualizacón fallida Error: "+e.getMessage());
+                    new LovelyInfoDialog(context)
+                            .setTopColorRes(R.color.primary_color)
+                            .setTitle("Error")
+                            .setMessage("Algo salio mal no se pudo actualizar los datos ")
+                            .show();
+                }
+            });
+
+        }
+
+
     }
 
     private void setImageAvatar(Context context, String imgBase64){

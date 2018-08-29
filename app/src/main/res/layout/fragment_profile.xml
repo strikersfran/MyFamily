@@ -42,7 +42,7 @@
                     android:layout_alignBottom="@+id/fp_avatar"
                     android:layout_alignEnd="@+id/fp_avatar"
                     android:background="@color/cardview_shadow_end_color"
-                    android:src="@drawable/ic_edit_foto" />
+                    android:src="@drawable/ic_photo_camera_black_24dp" />
             </RelativeLayout>
 
         </LinearLayout>

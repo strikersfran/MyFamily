@@ -46,7 +46,7 @@
     <string name="new_registro">Nuevo Registro</string>
     <string name="requerido">Esta campo es requerido</string>
     <string name="no_coinciden">Las Contraseñas no coinciden</string>
-    <string name="error_email">Invalido email debe contener @</string>
+    <string name="error_email">Invalido email</string>
     <string name="error_user_exists">Ya existe un usuarios registrado con ese email</string>
     <string name="error_weak_password">La contraseña dada no es válida</string>
     <string name="error_invalid_credenciales">Contraseña invalida</string>

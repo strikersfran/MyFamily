@@ -1,11 +1,17 @@
 package ve.com.strikersfran.myfamily;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
     private String nombre;
     private String primerApellido;
     private String segundoApellido;
     private String avatar;
     private String email;
+    public Map<String, Boolean> stars = new HashMap<>();
 
     public User(String nombre, String primerApellido, String segundoApellido,String avatar,String email) {
         this.nombre = nombre;
@@ -53,5 +59,17 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("nombre", nombre);
+        result.put("primerApellido", primerApellido);
+        result.put("segundoApellido", segundoApellido);
+        result.put("avatar",avatar);
+        result.put("email",email);
+
+        return result;
     }
 }
