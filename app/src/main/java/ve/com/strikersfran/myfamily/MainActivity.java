@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     private void setImageAvatar(Context context, String imgBase64){
         try {
             Resources res = getResources();
-            //Nếu chưa có avatar thì để hình mặc định
+
             Bitmap src;
             if (imgBase64.equals("default")) {
                 src = BitmapFactory.decodeResource(res, R.drawable.avatar_default);
