@@ -12,6 +12,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import ve.com.strikersfran.myfamily.R;
+
 /**
  * Created by Francisco Carrion on 28/08/2018.
  */
@@ -119,5 +121,20 @@ public class ImageUtils {
         byte[] bitmapdata = bos.toByteArray();
         ByteArrayInputStream bs = new ByteArrayInputStream(bitmapdata);
         return bs;
+    }
+
+    public static Bitmap setImageAvatar(Context context, String imgBase64){
+
+        Resources res = context.getResources();
+        Bitmap src;
+        if (imgBase64.equals("default")) {
+            src = BitmapFactory.decodeResource(res, R.drawable.avatar_default);
+        } else {
+            byte[] decodedString = Base64.decode(imgBase64, Base64.DEFAULT);
+            src = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        }
+
+        return src;
+
     }
 }

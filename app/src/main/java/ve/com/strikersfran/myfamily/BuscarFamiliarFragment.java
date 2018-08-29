@@ -85,8 +85,8 @@ public class BuscarFamiliarFragment extends Fragment {
                                     String avatar = singleSnapshot.child("avatar").getValue(String.class);
                                     String email = singleSnapshot.child("email").getValue(String.class);
                                     mItems.add(new User(nombre,pApellido,sApellido,avatar,email));
-                                }
 
+                                }
                                 // Obtener el Recycler
                                 recycler = (RecyclerView) myFragmentView.findViewById(R.id.rv_buscar_familiar);
                                 recycler.setHasFixedSize(true);

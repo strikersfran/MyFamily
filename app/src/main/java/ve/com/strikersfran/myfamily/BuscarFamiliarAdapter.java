@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import ve.com.strikersfran.myfamily.util.ImageUtils;
 
 public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAdapter.BuscarFamiliarViewHolder>{
 
@@ -37,7 +38,7 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
     public void onBindViewHolder(@NonNull BuscarFamiliarViewHolder holder, int position) {
 
         //Picasso.with(context).load(items.get(position).get).into(holder.imagen);
-        //holder.imagenUsuario.setImageResource(R.drawable.contacto);
+        holder.imagen.setImageBitmap(ImageUtils.setImageAvatar(context,items.get(position).getAvatar()));
         holder.nombre.setText(items.get(position).getNombre());
         holder.apellidos.setText(items.get(position).getPrimerApellido()+" "+items.get(position).getSegundoApellido());
 
