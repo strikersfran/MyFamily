@@ -1,6 +1,10 @@
 package ve.com.strikersfran.myfamily;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 import ve.com.strikersfran.myfamily.data.SharedPreferenceHelper;
 import ve.com.strikersfran.myfamily.data.StaticConfig;
+import ve.com.strikersfran.myfamily.util.ImageUtils;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mUserEmail;
     private CircleImageView mUserImagen;
     private DatabaseReference mUserRef;
+    private SharedPreferenceHelper prefHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
         mUserImagen = (CircleImageView) header.findViewById(R.id.m_image_user);
 
         mUserEmail.setText(user.getEmail().toString());
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, new NoticiasFragment())
+                .commit();
 
         mNavView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -142,7 +153,13 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
                 else{
-                    StaticConfig.UID=user.getUid();
+                    prefHelper = SharedPreferenceHelper.getInstance(MainActivity.this);
+                    User userInfo = prefHelper.getUserInfo();
+                    mUserName.setText(userInfo.getNombre() +" "+userInfo.getPrimerApellido());
+                    mUserEmail.setText(userInfo.getEmail());
+                    setImageAvatar(MainActivity.this,userInfo.getAvatar());
+
+                    /*StaticConfig.UID=user.getUid();
                     mUserRef = database.getReference("users").child(user.getUid());
                     mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -169,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onCancelled(DatabaseError databaseError) {
                             Log.e("ERROR", databaseError.getMessage());
                         }
-                    });
+                    });*/
                 }
             }
         };
@@ -211,4 +228,22 @@ public class MainActivity extends AppCompatActivity {
             auth.removeAuthStateListener(authListener);
         }
     }
+
+    private void setImageAvatar(Context context, String imgBase64){
+        try {
+            Resources res = getResources();
+            //Nếu chưa có avatar thì để hình mặc định
+            Bitmap src;
+            if (imgBase64.equals("default")) {
+                src = BitmapFactory.decodeResource(res, R.drawable.avatar_default);
+            } else {
+                byte[] decodedString = Base64.decode(imgBase64, Base64.DEFAULT);
+                src = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            }
+
+            mUserImagen.setImageBitmap(src);
+        }catch (Exception e){
+        }
+    }
+
 }

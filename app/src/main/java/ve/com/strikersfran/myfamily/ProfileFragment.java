@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,6 +29,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.yarolegovich.lovelydialog.LovelyCustomDialog;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -48,6 +52,7 @@ public class ProfileFragment extends Fragment {
     private static final int PICK_IMAGE = 1994;
     private Context context;
     private DatabaseReference userDB;
+    private LovelyProgressDialog mProgresDialog;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -55,7 +60,7 @@ public class ProfileFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         userDB = FirebaseDatabase.getInstance().getReference().child("users").child(StaticConfig.UID);
@@ -64,12 +69,16 @@ public class ProfileFragment extends Fragment {
         View  myFragmentView = inflater.inflate(R.layout.fragment_profile, container, false);
         context = myFragmentView.getContext();
 
+        mProgresDialog = new LovelyProgressDialog(context);
+
         avatar = (CircleImageView) myFragmentView.findViewById(R.id.fp_avatar);
         TextView nombres = (TextView) myFragmentView.findViewById(R.id.fp_nombres);
         TextView papellido = (TextView) myFragmentView.findViewById(R.id.fp_primer_apellido);
         TextView sapellido = (TextView) myFragmentView.findViewById(R.id.fp_segundo_apellido);
         TextView email = (TextView) myFragmentView.findViewById(R.id.fp_correo);
         ImageButton editAvatar = (ImageButton) myFragmentView.findViewById(R.id.fp_edit_foto);
+
+        ImageButton editDatos = (ImageButton) myFragmentView.findViewById(R.id.fp_btn_edit);
 
         LinearLayout cambiarContrasena = (LinearLayout) myFragmentView.findViewById(R.id.fp_cambiar_contrasena);
         LinearLayout salir = (LinearLayout) myFragmentView.findViewById(R.id.fp_salir);
@@ -96,15 +105,15 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(context)
-                        .setTitle("Avatar")
-                        .setMessage("Are you sure want to change avatar profile?")
+                        .setTitle("Imagen de Perfil")
+                        .setMessage("Estas seguro que deseas cambiar la inmagen de perfil?")
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 Intent intent = new Intent();
                                 intent.setType("image/*");
                                 intent.setAction(Intent.ACTION_PICK);
-                                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                                startActivityForResult(Intent.createChooser(intent, "Seleccionar Imagen"), PICK_IMAGE);
                                 dialogInterface.dismiss();
                             }
                         })
@@ -117,6 +126,27 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        editDatos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                View dialogView = inflater.inflate(R.layout.edit_datos_profile, null);
+                final LovelyCustomDialog customDialog;
+                customDialog= new LovelyCustomDialog(context);
+
+                customDialog.setView(R.layout.edit_datos_profile)
+                        .setTopColorRes(R.color.primary_color)
+                        .setTitle("Editar mis datos")
+                        .setListener(R.id.edp_btn_aceptar, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                customDialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
+        });
+
 
         return myFragmentView;
     }
@@ -124,7 +154,6 @@ public class ProfileFragment extends Fragment {
     private void setImageAvatar(Context context, String imgBase64){
         try {
             Resources res = getResources();
-            //Nếu chưa có avatar thì để hình mặc định
             Bitmap src;
             if (imgBase64.equals("default")) {
                 src = BitmapFactory.decodeResource(res, R.drawable.avatar_default);
@@ -143,7 +172,7 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             if (data == null) {
-                Toast.makeText(context, "Có lỗi xảy ra, vui lòng thử lại", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "No seleccionaste una imagen", Toast.LENGTH_LONG).show();
                 return;
             }
             try {
@@ -159,10 +188,10 @@ public class ProfileFragment extends Fragment {
                 String imageBase64 = ImageUtils.encodeBase64(liteImage);
                 myAccount.setAvatar(imageBase64);
 
-                /*waitingDialog.setCancelable(false)
-                        .setTitle("Avatar updating....")
-                        .setTopColorRes(R.color.colorPrimary)
-                        .show();*/
+                mProgresDialog.setCancelable(false)
+                        .setTitle("Actualizando Perfil....")
+                        .setTopColorRes(R.color.primary_color)
+                        .show();
 
                 userDB.child("avatar").setValue(imageBase64)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -170,29 +199,29 @@ public class ProfileFragment extends Fragment {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
 
-                                    //waitingDialog.dismiss();
+                                    mProgresDialog.dismiss();
                                     SharedPreferenceHelper preferenceHelper = SharedPreferenceHelper.getInstance(context);
                                     preferenceHelper.saveUserInfo(myAccount);
                                     avatar.setImageDrawable(ImageUtils.roundedImage(context, liteImage));
 
-                                    /*new LovelyInfoDialog(context)
-                                            .setTopColorRes(R.color.colorPrimary)
-                                            .setTitle("Success")
-                                            .setMessage("Update avatar successfully!")
-                                            .show();*/
+                                    new LovelyInfoDialog(context)
+                                            .setTopColorRes(R.color.primary_color)
+                                            .setTitle("Felicidades !!")
+                                            .setMessage("Se ha actualizado la imagen correctamente!")
+                                            .show();
                                 }
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                //waitingDialog.dismiss();
+                                mProgresDialog.dismiss();
                                 Log.d("Update Avatar", "failed");
-                                /*new LovelyInfoDialog(context)
-                                        .setTopColorRes(R.color.colorAccent)
-                                        .setTitle("False")
-                                        .setMessage("False to update avatar")
-                                        .show();*/
+                                new LovelyInfoDialog(context)
+                                        .setTopColorRes(R.color.primary_color)
+                                        .setTitle("Error")
+                                        .setMessage("Algo salio mal no se pudo actualizar la imagen")
+                                        .show();
                             }
                         });
             } catch (FileNotFoundException e) {

@@ -49,7 +49,8 @@
     <string name="error_email">Invalido email debe contener @</string>
     <string name="error_user_exists">Ya existe un usuarios registrado con ese email</string>
     <string name="error_weak_password">La contraseña dada no es válida</string>
-    <string name="error_invalid_credenciales">Email y/o Contraseña no validos</string>
+    <string name="error_invalid_credenciales">Contraseña invalida</string>
     <string name="search_familiar">Buscar Familiar</string>
+    <string name="error_invalid_email">Correo no registrado</string>
 
 </resources>

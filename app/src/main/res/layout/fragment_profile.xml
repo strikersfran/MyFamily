@@ -23,8 +23,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/fp_avatar"
-                    android:layout_width="104dp"
-                    android:layout_height="104dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="20dp"
@@ -84,14 +84,6 @@
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/fp_btn_nombre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/border"
-                android:src="@drawable/ic_edit" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -124,13 +116,6 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/fp_btn_papellido"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/border"
-                android:src="@drawable/ic_edit" />
         </LinearLayout>
 
         <LinearLayout
@@ -162,14 +147,6 @@
                     android:text="Segundo"
                     android:textSize="18sp" />
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/fp_btn_sapellido"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/border"
-                android:src="@drawable/ic_edit" />
 
         </LinearLayout>
 
@@ -204,11 +181,12 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/fp_btn_correo"
+                android:id="@+id/fp_btn_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/border"
+                android:layout_marginEnd="5dp"
+                android:background="@color/cardview_shadow_end_color"
                 android:src="@drawable/ic_edit" />
 
         </LinearLayout>
@@ -223,10 +201,10 @@
             android:id="@+id/fp_cambiar_contrasena"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             android:clickable="true"
             android:orientation="horizontal"
-            android:paddingStart="20dp">
+            android:paddingStart="5dp">
 
             <ImageButton
                 android:id="@+id/imageButton1"
@@ -252,10 +230,10 @@
             android:id="@+id/fp_salir"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:clickable="true"
             android:orientation="horizontal"
-            android:paddingStart="20dp">
+            android:paddingStart="5dp">
 
             <ImageButton
                 android:id="@+id/imageButton"
