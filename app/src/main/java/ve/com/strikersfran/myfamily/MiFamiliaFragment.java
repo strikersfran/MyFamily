@@ -45,6 +45,7 @@ public class MiFamiliaFragment extends Fragment {
 
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_frame, mFragment)
+                        .addToBackStack(null)
                         .commit();
                 //getSupportActionBar().setTitle("Buscar Familiar");
             }

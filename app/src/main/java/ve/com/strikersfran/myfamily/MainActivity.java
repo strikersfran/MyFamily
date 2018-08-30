@@ -276,25 +276,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*Para detectar los eventos en le icono back de la toolbar*/
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        setDrawerState(true);
         return super.onSupportNavigateUp();
     }
 
-    //este metodo no funciona no se porque
+    //este metodo es para detectar el ultimo fagmento y poder colocar el icono amburguesa en el toolbar
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        String count = String.valueOf(getFragmentManager().getBackStackEntryCount());
-        Toast.makeText(MainActivity.this,"aqui"+count,Toast.LENGTH_SHORT);
+        Log.e("BackPressed","BackPressed activo");
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+        } else if(getSupportFragmentManager().getBackStackEntryCount() > 1){
+            Log.e("BackPressed","entro en cuenta > 1");
             getSupportFragmentManager().popBackStack();
         }else {
+            Log.e("BackPressed","entro en cuenta < 1");
+            setDrawerState(true);
             super.onBackPressed();
-            //setDrawerState(true);
         }
     }
 
