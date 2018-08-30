@@ -2,6 +2,7 @@ package ve.com.strikersfran.myfamily;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,14 +12,17 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +41,7 @@ import ve.com.strikersfran.myfamily.util.ImageUtils;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
     private Fragment mFragment = null;
     private NavigationView mNavView;
     private FirebaseAuth auth;
@@ -64,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar appbar = (Toolbar) findViewById(R.id.appbar);
         setSupportActionBar(appbar);
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_menu);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         prefHelper = SharedPreferenceHelper.getInstance(MainActivity.this);
 
@@ -81,19 +86,20 @@ public class MainActivity extends AppCompatActivity {
 
         mUserEmail.setText(user.getEmail().toString());
 
-        getSupportFragmentManager().beginTransaction()
+        /*getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, new NoticiasFragment())
-                .commit();
+                .commit();*/
 
         mNavView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-
+                        setDrawerState(false);
 
                         switch (menuItem.getItemId()) {
                             case R.id.menu_opcion_noticias:
                                 mFragment = new NoticiasFragment();
+                                //setDrawerState(true);
                                 //fragmentTransaction = true;
                                 break;
                             case R.id.menu_opcion_chat:
@@ -119,28 +125,25 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
-        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+        mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.drawer_open, R.string.drawer_close){
 
-            }
-
-            @Override
             public void onDrawerOpened(@NonNull View drawerView) {
+                super.onDrawerOpened(drawerView);
 
             }
 
-            @Override
+
             public void onDrawerClosed(@NonNull View drawerView) {
+                super.onDrawerClosed(drawerView);
                 if(mFragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.content_frame, mFragment)
+                            .addToBackStack(null)
                             .commit();
                     mFragment = null;
                 }
             }
 
-            @Override
             public void onDrawerStateChanged(int newState) {
                 User userInfo = prefHelper.getUserInfo();
                 mUserName.setText(userInfo.getNombre());
@@ -148,7 +151,20 @@ public class MainActivity extends AppCompatActivity {
                 mUserEmail.setText(userInfo.getEmail());
                 setImageAvatar(MainActivity.this,userInfo.getAvatar());
             }
+        };
+
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getBaseContext(),"MAIN",Toast.LENGTH_SHORT);
+                onBackPressed();
+            }
         });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -170,16 +186,52 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    /*Esta funcion permite tomar la desicision de que boton mostrar en la barra cuando se cambia de fragmento*/
+    public void setDrawerState(boolean isEnabled) {
+        if ( isEnabled ) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            mDrawerToggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_UNLOCKED);
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            mDrawerToggle.syncState();
+            //getSupportActionBar().setHomeButtonEnabled(true);
+        }
+        else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            mDrawerToggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            mDrawerToggle.syncState();
+            //getSupportActionBar().setHomeButtonEnabled(false);
+        }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (mDrawerToggle.isDrawerIndicatorEnabled() && mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
 
         switch(item.getItemId()) {
             case R.id.accion_salir:
                 auth.signOut();
                 break;
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+            /*case android.R.id.home:
+                onBackPressed();
+                setDrawerState(true);
+                return true;*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -221,6 +273,28 @@ public class MainActivity extends AppCompatActivity {
 
             mUserImagen.setImageBitmap(src);
         }catch (Exception e){
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        setDrawerState(true);
+        return super.onSupportNavigateUp();
+    }
+
+    //este metodo no funciona no se porque
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        String count = String.valueOf(getFragmentManager().getBackStackEntryCount());
+        Toast.makeText(MainActivity.this,"aqui"+count,Toast.LENGTH_SHORT);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+        }else {
+            super.onBackPressed();
+            //setDrawerState(true);
         }
     }
 

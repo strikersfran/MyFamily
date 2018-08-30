@@ -52,5 +52,7 @@
     <string name="error_invalid_credenciales">Contraseña invalida</string>
     <string name="search_familiar">Buscar Familiar</string>
     <string name="error_invalid_email">Correo no registrado</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
 
 </resources>
