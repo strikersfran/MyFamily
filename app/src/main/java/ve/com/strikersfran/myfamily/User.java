@@ -11,14 +11,16 @@ public class User {
     private String segundoApellido;
     private String avatar;
     private String email;
+    private String uid;
     public Map<String, Boolean> stars = new HashMap<>();
 
-    public User(String nombre, String primerApellido, String segundoApellido,String avatar,String email) {
+    public User(String nombre, String primerApellido, String segundoApellido,String avatar,String email,String uid) {
         this.nombre = nombre;
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;
         this.avatar = avatar;
         this.email = email;
+        this.uid = uid;
     }
 
     public String getNombre() {
@@ -61,6 +63,14 @@ public class User {
         this.email = email;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -69,6 +79,7 @@ public class User {
         result.put("segundoApellido", segundoApellido);
         result.put("avatar",avatar);
         result.put("email",email);
+        result.put("uid",uid);
 
         return result;
     }

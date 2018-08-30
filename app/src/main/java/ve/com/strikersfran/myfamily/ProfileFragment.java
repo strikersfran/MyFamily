@@ -228,7 +228,7 @@ public class ProfileFragment extends Fragment {
 
             mCustomDialog.dismiss();
 
-            final User myAccountUpdate = new User(nombre,pApellido,sApellido,myAccount.getAvatar(),emails);
+            final User myAccountUpdate = new User(nombre,pApellido,sApellido,myAccount.getAvatar(),emails,StaticConfig.UID);
 
             mProgresDialog.setCancelable(false)
                     .setTitle("Actualizando datos....")

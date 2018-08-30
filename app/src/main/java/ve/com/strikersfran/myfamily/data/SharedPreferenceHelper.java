@@ -50,8 +50,9 @@ public class SharedPreferenceHelper {
         String sapellido = preferences.getString(SHARE_KEY_SAPELLIDO,"");
         String email = preferences.getString(SHARE_KEY_EMAIL,"");
         String avatar = preferences.getString(SHARE_KEY_AVATAR, "default");
+        String uid = preferences.getString(SHARE_KEY_UID, "");
 
-        User user = new User(nombre,papellido,sapellido,avatar,email);
+        User user = new User(nombre,papellido,sapellido,avatar,email,uid);
 
         return user;
     }

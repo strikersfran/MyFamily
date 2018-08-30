@@ -5,6 +5,7 @@ import android.nfc.tech.MifareClassic;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,7 +48,6 @@ public class MiFamiliaFragment extends Fragment {
                         .replace(R.id.content_frame, mFragment)
                         .addToBackStack(null)
                         .commit();
-                //getSupportActionBar().setTitle("Buscar Familiar");
             }
         });
 
@@ -75,6 +75,12 @@ public class MiFamiliaFragment extends Fragment {
 
     public void findFamiliar(){
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.opcion_mi_familia);
     }
 
 }

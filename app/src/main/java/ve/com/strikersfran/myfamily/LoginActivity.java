@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void saveUserInfo() {
 
-        FirebaseUser user = auth.getCurrentUser();
+        final FirebaseUser user = auth.getCurrentUser();
         StaticConfig.UID=user.getUid();
 
         FirebaseDatabase.getInstance().getReference("users").child(StaticConfig.UID)
@@ -179,12 +179,13 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mProgresDialog.dismiss();
                 HashMap hashUser = (HashMap) dataSnapshot.getValue();
-                User userInfo = new User("","","","","");
+                User userInfo = new User("","","","","","");
                 userInfo.setNombre((String) hashUser.get("nombre"));
                 userInfo.setPrimerApellido((String) hashUser.get("primerApellido"));
                 userInfo.setSegundoApellido((String) hashUser.get("segundoApellido"));
                 userInfo.setEmail((String) hashUser.get("email"));
                 userInfo.setAvatar((String) hashUser.get("avatar"));
+                userInfo.setUid((String) hashUser.get("uid"));
 
                 SharedPreferenceHelper.getInstance(LoginActivity.this).saveUserInfo(userInfo);
 

@@ -154,7 +154,7 @@ public class RegistrarActivity extends AppCompatActivity {
                             } else {
                                 FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
                                 //String uid = fUser.getUid();
-                                User user = new User(nombre,pApellido,sApellido,"default",email);
+                                User user = new User(nombre,pApellido,sApellido,"default",email,fUser.getUid());
 
                                 mDatabase.child("users").child(fUser.getUid()).setValue(user);
                                 mProgressBar.setVisibility(View.GONE);

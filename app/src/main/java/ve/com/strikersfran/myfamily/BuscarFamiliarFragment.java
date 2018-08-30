@@ -3,8 +3,10 @@ package ve.com.strikersfran.myfamily;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -84,7 +86,8 @@ public class BuscarFamiliarFragment extends Fragment {
                                     String sApellido = singleSnapshot.child("segundoApellido").getValue(String.class);
                                     String avatar = singleSnapshot.child("avatar").getValue(String.class);
                                     String email = singleSnapshot.child("email").getValue(String.class);
-                                    mItems.add(new User(nombre,pApellido,sApellido,avatar,email));
+                                    String uid = singleSnapshot.child("uid").getValue(String.class);
+                                    mItems.add(new User(nombre,pApellido,sApellido,avatar,email,uid));
 
                                 }
                                 // Obtener el Recycler
@@ -111,10 +114,44 @@ public class BuscarFamiliarFragment extends Fragment {
                 }
             }
         });
-
-
-
         return myFragmentView;
     }
 
+    /*Funcion para buscar todos los usuarios registrados excluyendo los agregado con familia*/
+    public void buscarUsuarios(){
+        mDatabase.getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mProgressBar.setVisibility(View.GONE);
+
+                if (dataSnapshot.getValue() == null) {
+                    Log.e("BUSCAR FAMILIAR", "No se encontraron registros");
+
+                } else {
+                    mItems = new ArrayList();
+                    for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                        String nombre = singleSnapshot.child("nombre").getValue(String.class);
+                        String pApellido = singleSnapshot.child("primerApellido").getValue(String.class);
+                        String sApellido = singleSnapshot.child("segundoApellido").getValue(String.class);
+                        String avatar = singleSnapshot.child("avatar").getValue(String.class);
+                        String email = singleSnapshot.child("email").getValue(String.class);
+                        String uid = singleSnapshot.child("uid").getValue(String.class);
+                        mItems.add(new User(nombre, pApellido, sApellido, avatar, email,uid));
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Buscar Familiares");
+    }
 }

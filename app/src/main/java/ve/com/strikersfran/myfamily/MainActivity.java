@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         mUserEmail.setText(user.getEmail().toString());
 
-        /*getSupportFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, new NoticiasFragment())
-                .commit();*/
+                .commit();
 
         mNavView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -97,11 +97,11 @@ public class MainActivity extends AppCompatActivity {
                         setDrawerState(false);
 
                         switch (menuItem.getItemId()) {
-                            case R.id.menu_opcion_noticias:
+                            /*case R.id.menu_opcion_noticias:
                                 mFragment = new NoticiasFragment();
                                 //setDrawerState(true);
                                 //fragmentTransaction = true;
-                                break;
+                                break;*/
                             case R.id.menu_opcion_chat:
                                 mFragment = new ChatsFragment();
                                 //fragmentTransaction = true;
@@ -116,11 +116,11 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                         }
 
-                        menuItem.setChecked(true);
+                        //menuItem.setChecked(false);
                         getSupportActionBar().setTitle(menuItem.getTitle());
 
                         mDrawerLayout.closeDrawers();
-                        return true;
+                        return false;
                     }
                 }
         );
@@ -149,19 +149,11 @@ public class MainActivity extends AppCompatActivity {
                 mUserName.setText(userInfo.getNombre());
                 mUserApellidos.setText(userInfo.getPrimerApellido()+" "+userInfo.getSegundoApellido());
                 mUserEmail.setText(userInfo.getEmail());
-                setImageAvatar(MainActivity.this,userInfo.getAvatar());
+                mUserImagen.setImageBitmap(ImageUtils.setImageAvatar(MainActivity.this,userInfo.getAvatar()));
             }
         };
 
         mDrawerLayout.addDrawerListener(mDrawerToggle);
-
-        mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getBaseContext(),"MAIN",Toast.LENGTH_SHORT);
-                onBackPressed();
-            }
-        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -180,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                     mUserName.setText(userInfo.getNombre());
                     mUserApellidos.setText(userInfo.getPrimerApellido()+" "+userInfo.getSegundoApellido());
                     mUserEmail.setText(userInfo.getEmail());
-                    setImageAvatar(MainActivity.this,userInfo.getAvatar());
+                    mUserImagen.setImageBitmap(ImageUtils.setImageAvatar(MainActivity.this,userInfo.getAvatar()));
                 }
             }
         };
@@ -220,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (mDrawerToggle.isDrawerIndicatorEnabled() && mDrawerToggle.onOptionsItemSelected(item)) {
+        if (/*mDrawerToggle.isDrawerIndicatorEnabled() &&*/ mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 
@@ -228,10 +220,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.accion_salir:
                 auth.signOut();
                 break;
-            /*case android.R.id.home:
-                onBackPressed();
-                setDrawerState(true);
-                return true;*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,23 +244,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         if (authListener != null) {
             auth.removeAuthStateListener(authListener);
-        }
-    }
-
-    private void setImageAvatar(Context context, String imgBase64){
-        try {
-            Resources res = getResources();
-
-            Bitmap src;
-            if (imgBase64.equals("default")) {
-                src = BitmapFactory.decodeResource(res, R.drawable.avatar_default);
-            } else {
-                byte[] decodedString = Base64.decode(imgBase64, Base64.DEFAULT);
-                src = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            }
-
-            mUserImagen.setImageBitmap(src);
-        }catch (Exception e){
         }
     }
 

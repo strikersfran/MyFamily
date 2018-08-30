@@ -4,10 +4,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
+        <!--<item
             android:id="@+id/menu_opcion_noticias"
             android:icon="@drawable/ic_noticias"
-            android:title="@string/opcion_noticias"></item>
+            android:title="@string/opcion_noticias"></item>-->
         <item
             android:id="@+id/menu_opcion_chat"
             android:icon="@drawable/ic_chat"
