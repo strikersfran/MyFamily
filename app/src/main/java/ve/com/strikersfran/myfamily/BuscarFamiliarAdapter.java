@@ -22,6 +22,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import ve.com.strikersfran.myfamily.data.StaticConfig;
+import ve.com.strikersfran.myfamily.model.ListFamiliar;
 import ve.com.strikersfran.myfamily.util.ImageUtils;
 
 public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAdapter.BuscarFamiliarViewHolder>{
@@ -96,7 +97,11 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
     private void addFamiliar(final String idFamiliar, boolean isIdFriend) {
         if (idFamiliar != null) {
             if (isIdFriend) {
-                FirebaseDatabase.getInstance().getReference().child("familiarByUsers/" + StaticConfig.UID).push().setValue(idFamiliar)
+                ListFamiliar familiar = new ListFamiliar(idFamiliar,"invitado");
+                FirebaseDatabase.getInstance().getReference().child("familiarByUsers/" + StaticConfig.UID)
+                        //.push().setValue(StaticConfig.UID)
+                        //.child(idFamiliar).setValue("false")
+                        .push().setValue(familiar)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -117,7 +122,12 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
                             }
                         });
             } else {
-                FirebaseDatabase.getInstance().getReference().child("familiarByUsers/" + idFamiliar).push().setValue(StaticConfig.UID).addOnCompleteListener(new OnCompleteListener<Void>() {
+                ListFamiliar familiar = new ListFamiliar(StaticConfig.UID,"invitado");
+                FirebaseDatabase.getInstance().getReference().child("familiarByUsers/" + idFamiliar)
+                        //.push().setValue(StaticConfig.UID)
+                        //.child(StaticConfig.UID).setValue("false")
+                        .push().setValue(familiar)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {

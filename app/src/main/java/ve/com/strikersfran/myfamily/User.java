@@ -12,9 +12,11 @@ public class User {
     private String avatar;
     private String email;
     private String uid;
-    public Map<String, Boolean> stars = new HashMap<>();
 
-    public User(String nombre, String primerApellido, String segundoApellido,String avatar,String email,String uid) {
+    public User() {
+    }
+
+    public User(String nombre, String primerApellido, String segundoApellido, String avatar, String email, String uid) {
         this.nombre = nombre;
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;

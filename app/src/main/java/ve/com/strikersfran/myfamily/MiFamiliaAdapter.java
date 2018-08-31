@@ -16,6 +16,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.zip.Inflater;
 
+import ve.com.strikersfran.myfamily.util.ImageUtils;
+
 public class MiFamiliaAdapter extends RecyclerView.Adapter<MiFamiliaAdapter.MiFamiliaViewHolder> {
 
     private List<MiFamilia> items;
@@ -39,7 +41,7 @@ public class MiFamiliaAdapter extends RecyclerView.Adapter<MiFamiliaAdapter.MiFa
     public void onBindViewHolder(@NonNull MiFamiliaViewHolder holder, int position) {
 
         holder.toolbar.inflateMenu(R.menu.menu_mifamilia);
-        Picasso.with(context).load(items.get(position).getFoto()).into(holder.imagenFamilia);
+        holder.imagenFamilia.setImageBitmap(ImageUtils.setImageAvatar(context,items.get(position).getFoto()));
         holder.nameFamilia.setText(items.get(position).getNombre());
         holder.parentescoFamilia.setText(items.get(position).getParentesco());
         holder.ratingFamilia.setRating(items.get(position).getRating());
