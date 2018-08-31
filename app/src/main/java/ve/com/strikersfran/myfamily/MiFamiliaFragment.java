@@ -109,6 +109,7 @@ public class MiFamiliaFragment extends Fragment {
 
                 if (dataSnapshot.getValue() == null) {
                     Log.e("CARGAR FAMILIAR","No se encontraron registros");
+                    mProgresDialog.dismiss();
 
                 } else {
                     mItems = new ArrayList();
