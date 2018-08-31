@@ -115,9 +115,9 @@ public class MiFamiliaFragment extends Fragment {
                     final List<ListFamiliar> familiarList = new ArrayList<>();
 
                     for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                        String uid = singleSnapshot.child("uid").getValue(String.class);
-                        String estatus = singleSnapshot.child("estatus").getValue(String.class);
-                        familiarList.add(new ListFamiliar(uid,estatus));
+                        //String uid = singleSnapshot.child("uid").getValue(String.class);
+                        //String estatus = singleSnapshot.child("estatus").getValue(String.class);
+                        familiarList.add(singleSnapshot.getValue(ListFamiliar.class)/*new ListFamiliar(uid,estatus)*/);
 
                     }
 
