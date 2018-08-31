@@ -21,6 +21,7 @@ import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import ve.com.strikersfran.myfamily.data.MiFamiliaBD;
 import ve.com.strikersfran.myfamily.data.StaticConfig;
 import ve.com.strikersfran.myfamily.model.ListFamiliar;
 import ve.com.strikersfran.myfamily.util.ImageUtils;
@@ -46,7 +47,7 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final BuscarFamiliarViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final BuscarFamiliarViewHolder holder, final int position) {
 
         mProgresDialog = new LovelyProgressDialog(context);
         //Picasso.with(context).load(items.get(position).get).into(holder.imagen);
@@ -64,8 +65,8 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
                         .show();
                 //agregar el usaurio como familiar
                 String uid = holder.uid.getText().toString();
-                addFamiliar(uid,true);
-                Toast.makeText(context,"Boton Agregar",Toast.LENGTH_SHORT).show();
+                addFamiliar(uid,true,position);
+                //Toast.makeText(context,"Boton Agregar",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -94,7 +95,7 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
         }
     }
     /*Esta funcion permite agregar un usuario como familiar de forma cruzada*/
-    private void addFamiliar(final String idFamiliar, boolean isIdFriend) {
+    private void addFamiliar(final String idFamiliar, boolean isIdFriend, final int position) {
         if (idFamiliar != null) {
             if (isIdFriend) {
                 ListFamiliar familiar = new ListFamiliar(idFamiliar,"invitado");
@@ -106,7 +107,7 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    addFamiliar(idFamiliar, false);
+                                    addFamiliar(idFamiliar, false,position);
                                 }
                             }
                         })
@@ -131,7 +132,7 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            addFamiliar(null, false);
+                            addFamiliar(null, false,position);
                         }
                     }
                 })
@@ -148,11 +149,28 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
                         });
             }
         } else {
+
+            //guardar en la base de datos local
+            MiFamilia mf = new MiFamilia();
+            mf.setUid(items.get(position).getUid());
+            mf.setAvatar(items.get(position).getAvatar());
+            mf.setNombre(items.get(position).getNombre());
+            mf.setPrimerApellido(items.get(position).getPrimerApellido());
+            mf.setSegundoApellido(items.get(position).getSegundoApellido());
+            mf.setEmail(items.get(position).getEmail());
+            mf.setLastUpdate(items.get(position).getLastUpdate());
+            mf.setEstatus("invitado");
+            mf.setParentesco("S/P");
+            mf.setRating(0);//este campo debe desaparecer
+
+            MiFamiliaBD.getInstance(context).addMiFamilia(mf);
+            //notifyDataSetChanged();
+
             mProgresDialog.dismiss();
             new LovelyInfoDialog(context)
                     .setTopColorRes(R.color.primary_color)
                     .setTitle("Felicidades!!")
-                    .setMessage("Se agrego correctamente el familiar")
+                    .setMessage("Se envió correctamente la notificación de amistad a "+items.get(position).getNombre())
                     .show();
         }
     }

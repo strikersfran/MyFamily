@@ -1,6 +1,7 @@
 package ve.com.strikersfran.myfamily;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,9 +25,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ve.com.strikersfran.myfamily.data.MiFamiliaBD;
+import ve.com.strikersfran.myfamily.data.StaticConfig;
+import ve.com.strikersfran.myfamily.model.ListMiFamilia;
 
 
 /**
@@ -40,6 +47,10 @@ public class BuscarFamiliarFragment extends Fragment {
     private ProgressBar mProgressBar;
     private FirebaseDatabase mDatabase;
     private List mItems;
+    private ArrayList<String> listMiFamiliaID = null;
+    private ListMiFamilia dataListMiFamilia = null;
+    private Context context;
+    private LovelyProgressDialog mProgresDialog;
 
     public BuscarFamiliarFragment() {
         // Required empty public constructor
@@ -51,12 +62,24 @@ public class BuscarFamiliarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View myFragmentView = inflater.inflate(R.layout.fragment_buscar_familiar, container, false);
+        context = myFragmentView.getContext();
+        mProgresDialog = new LovelyProgressDialog(context);
 
         ImageButton btnBuscar = (ImageButton) myFragmentView.findViewById(R.id.fb_btn_buscar);
         final EditText txtFiltro = (EditText) myFragmentView.findViewById(R.id.fb_filtro);
         mProgressBar = (ProgressBar) myFragmentView.findViewById(R.id.fb_progress_bar) ;
 
         mDatabase = FirebaseDatabase.getInstance();
+
+        if (dataListMiFamilia == null) {
+            dataListMiFamilia = MiFamiliaBD.getInstance(getContext()).getListMiFamilia();
+            if (dataListMiFamilia.getListMiFamilia().size() > 0) {
+                listMiFamiliaID = new ArrayList<>();
+                for (MiFamilia familia : dataListMiFamilia.getListMiFamilia()) {
+                    listMiFamiliaID.add(familia.getUid());
+                }
+            }
+        }
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,45 +91,79 @@ public class BuscarFamiliarFragment extends Fragment {
                     txtFiltro.requestFocus();
                 }
                 else{
-                    mProgressBar.setVisibility(View.VISIBLE);
+                    //mProgressBar.setVisibility(View.VISIBLE);
+                    mProgresDialog.setCancelable(false)
+                            .setTitle("Buscando Familiares....")
+                            .setTopColorRes(R.color.primary_color)
+                            .show();
+
                     mDatabase.getReference().child("users").orderByChild("nombre")
                             .startAt(filtro).endAt(filtro+"\\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            mProgressBar.setVisibility(View.GONE);
+                            //mProgressBar.setVisibility(View.GONE);
+                            mProgresDialog.dismiss();
 
                             if (dataSnapshot.getValue() == null) {
-                                Log.e("BUSCAR FAMILIAR","No se encontraron registros");
+                                new LovelyInfoDialog(context)
+                                        .setTopColorRes(R.color.primary_color)
+                                        .setTitle("Menudo detalle")
+                                        .setMessage("No encontramos Familiares con esos datos")
+                                        .show();
 
                             } else {
                                 mItems = new ArrayList();
                                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                                    String nombre = singleSnapshot.child("nombre").getValue(String.class);
-                                    String pApellido = singleSnapshot.child("primerApellido").getValue(String.class);
-                                    String sApellido = singleSnapshot.child("segundoApellido").getValue(String.class);
-                                    String avatar = singleSnapshot.child("avatar").getValue(String.class);
-                                    String email = singleSnapshot.child("email").getValue(String.class);
                                     String uid = singleSnapshot.child("uid").getValue(String.class);
-                                    mItems.add(new User(nombre,pApellido,sApellido,avatar,email,uid));
 
+                                    //para evitar listar personas que ya son mis familiares
+                                    if(!listMiFamiliaID.contains(uid)&&!uid.equals(StaticConfig.UID)) {
+                                        User user = new User();
+                                        user.setNombre(singleSnapshot.child("nombre").getValue(String.class));
+                                        user.setPrimerApellido(singleSnapshot.child("primerApellido").getValue(String.class));
+                                        user.setSegundoApellido(singleSnapshot.child("segundoApellido").getValue(String.class));
+                                        user.setAvatar(singleSnapshot.child("avatar").getValue(String.class));
+                                        user.setEmail(singleSnapshot.child("email").getValue(String.class));
+                                        user.setUid(uid);
+                                        user.setLastUpdate((Long) singleSnapshot.child("lastUpdate").getValue());
+
+                                        mItems.add(user);
+                                    }
                                 }
-                                // Obtener el Recycler
-                                recycler = (RecyclerView) myFragmentView.findViewById(R.id.rv_buscar_familiar);
-                                recycler.setHasFixedSize(true);
 
-                                // Usar un administrador para LinearLayout
-                                lManager = new LinearLayoutManager(getContext());
-                                recycler.setLayoutManager(lManager);
+                                if(mItems.size() == 0){
 
-                                // Crear un nuevo adaptador
-                                adapter = new BuscarFamiliarAdapter(mItems);
-                                recycler.setAdapter(adapter);
+                                    new LovelyInfoDialog(context)
+                                            .setTopColorRes(R.color.primary_color)
+                                            .setTitle("Menudo detalle")
+                                            .setMessage("No encontramos Familiares con esos datos")
+                                            .show();
+                                }
+                                else {
+                                    // Obtener el Recycler
+                                    recycler = (RecyclerView) myFragmentView.findViewById(R.id.rv_buscar_familiar);
+                                    recycler.setHasFixedSize(true);
+
+                                    // Usar un administrador para LinearLayout
+                                    lManager = new LinearLayoutManager(getContext());
+                                    recycler.setLayoutManager(lManager);
+
+                                    // Crear un nuevo adaptador
+                                    adapter = new BuscarFamiliarAdapter(mItems);
+                                    recycler.setAdapter(adapter);
+                                }
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            //mProgressBar.setVisibility(View.GONE);
+                            mProgresDialog.dismiss();
+                            new LovelyInfoDialog(context)
+                                    .setTopColorRes(R.color.primary_color)
+                                    .setTitle("Error")
+                                    .setMessage("Algo no Salio bien al buscar los familiares "+databaseError.getMessage())
+                                    .show();
                         }
                     });
 

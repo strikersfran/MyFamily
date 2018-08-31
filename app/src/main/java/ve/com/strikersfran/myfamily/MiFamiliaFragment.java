@@ -21,13 +21,16 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import ve.com.strikersfran.myfamily.data.MiFamiliaBD;
 import ve.com.strikersfran.myfamily.data.StaticConfig;
 import ve.com.strikersfran.myfamily.model.ListFamiliar;
+import ve.com.strikersfran.myfamily.model.ListMiFamilia;
 
 
 /**
@@ -43,6 +46,7 @@ public class MiFamiliaFragment extends Fragment {
     private LovelyProgressDialog mProgresDialog;
     private Context context;
     private List mItems;
+    private ListMiFamilia dataListMiFamilia = null;
 
     public MiFamiliaFragment() {
         // Required empty public constructor
@@ -60,6 +64,14 @@ public class MiFamiliaFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance();
         mProgresDialog = new LovelyProgressDialog(context);
 
+        // Obtener el Recycler
+        recycler = (RecyclerView) myFragmentView.findViewById(R.id.rv_mi_familia);
+        recycler.setHasFixedSize(true);
+
+        // Usar un administrador para LinearLayout
+        lManager = new GridLayoutManager(getContext(),2);
+        recycler.setLayoutManager(lManager);
+
         mAddFamilia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +84,24 @@ public class MiFamiliaFragment extends Fragment {
             }
         });
 
-        getFamiliar();
+        //if (dataListMiFamilia == null) {
+            dataListMiFamilia = MiFamiliaBD.getInstance(getContext()).getListMiFamilia();
+            if (dataListMiFamilia.getListMiFamilia().size() > 0) {
+                //listMiFamiliaID = new ArrayList<>();
+                //for (MiFamilia familia : dataListMiFamilia.getListMiFamilia()) {
+                //    listMiFamiliaID.add(familia.getUid());
+                //}
+                // Crear un nuevo adaptador
+                adapter = new MiFamiliaAdapter(dataListMiFamilia.getListMiFamilia());
+                recycler.setAdapter(adapter);
+                //detectFriendOnline.start();
+            }
+            else{
+                getFamiliar();
+            }
+        //}
+
+
 
         /*List items = new ArrayList();
 
@@ -81,13 +110,7 @@ public class MiFamiliaFragment extends Fragment {
         items.add(new MiFamilia("file:///android_asset/avatar3.jpg","Yismar Carrión","Hermano",3,"Off-Line"));
         items.add(new MiFamilia("file:///android_asset/avatar4.jpg","William Carrión","Hermano",3,"Off-Line"));
         */
-        // Obtener el Recycler
-        recycler = (RecyclerView) myFragmentView.findViewById(R.id.rv_mi_familia);
-        recycler.setHasFixedSize(true);
 
-        // Usar un administrador para LinearLayout
-        lManager = new GridLayoutManager(getContext(),2);
-        recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
         //adapter = new MiFamiliaAdapter(items);
@@ -133,18 +156,30 @@ public class MiFamiliaFragment extends Fragment {
 
                                     // Filtrar solo mis familiares
                                     List<MiFamilia> miFamiliaList = new ArrayList<>();
+                                    //listMiFamiliaID = new ArrayList<>();
                                     for (DataSnapshot dataSnapshot1 : list) {
                                         if (!dataSnapshot1.getKey().equals(uid)) {
                                             for(ListFamiliar familiar: familiarList){
                                                 if(TextUtils.equals(familiar.getUid(),dataSnapshot1.getKey())){
                                                     MiFamilia mf = new MiFamilia();
-                                                    mf.setFoto(dataSnapshot1.child("avatar").getValue().toString());
+                                                    mf.setUid(familiar.getUid());
+                                                    mf.setAvatar(dataSnapshot1.child("avatar").getValue().toString());
                                                     mf.setNombre(dataSnapshot1.child("nombre").getValue().toString());
+                                                    mf.setPrimerApellido(dataSnapshot1.child("primerApellido").getValue().toString());
+                                                    mf.setSegundoApellido(dataSnapshot1.child("segundoApellido").getValue().toString());
+                                                    mf.setEmail(dataSnapshot1.child("email").getValue().toString());
+                                                    mf.setLastUpdate((Long) dataSnapshot1.child("lastUpdate").getValue());
                                                     mf.setEstatus(familiar.getEstatus());
                                                     mf.setParentesco("S/P");
-                                                    mf.setRating(3);
+                                                    mf.setRating(3);//este campo debe desaparecer
 
+                                                    //para guardar la lista de id de mis familiares
+                                                    //listMiFamiliaID.add(familiar.getUid());
                                                     miFamiliaList.add(mf);
+
+                                                    //para almacenar la lista de familiares en la db local
+                                                    dataListMiFamilia.getListMiFamilia().add(mf);
+                                                    MiFamiliaBD.getInstance(getContext()).addMiFamilia(mf);
                                                 }
                                             }
                                         }
@@ -160,7 +195,12 @@ public class MiFamiliaFragment extends Fragment {
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-
+                                    mProgresDialog.dismiss();
+                                    new LovelyInfoDialog(context)
+                                            .setTopColorRes(R.color.primary_color)
+                                            .setTitle("Error")
+                                            .setMessage("Algo no Salio mientras se cargaba tus familiares "+databaseError.getMessage())
+                                            .show();
                                 }
                             });
                 }

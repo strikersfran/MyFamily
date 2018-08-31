@@ -41,7 +41,7 @@ public class MiFamiliaAdapter extends RecyclerView.Adapter<MiFamiliaAdapter.MiFa
     public void onBindViewHolder(@NonNull MiFamiliaViewHolder holder, int position) {
 
         holder.toolbar.inflateMenu(R.menu.menu_mifamilia);
-        holder.imagenFamilia.setImageBitmap(ImageUtils.setImageAvatar(context,items.get(position).getFoto()));
+        holder.imagenFamilia.setImageBitmap(ImageUtils.setImageAvatar(context,items.get(position).getAvatar()));
         holder.nameFamilia.setText(items.get(position).getNombre());
         holder.parentescoFamilia.setText(items.get(position).getParentesco());
         holder.ratingFamilia.setRating(items.get(position).getRating());

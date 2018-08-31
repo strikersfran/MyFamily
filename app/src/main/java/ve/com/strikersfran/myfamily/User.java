@@ -12,6 +12,7 @@ public class User {
     private String avatar;
     private String email;
     private String uid;
+    private Long lastUpdate;
 
     public User() {
     }
@@ -23,6 +24,7 @@ public class User {
         this.avatar = avatar;
         this.email = email;
         this.uid = uid;
+        this.lastUpdate = System.currentTimeMillis()/1000;
     }
 
     public String getNombre() {
@@ -43,6 +45,10 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public Long getLastUpdate() {
+        return lastUpdate;
     }
 
     public void setNombre(String nombre) {
@@ -73,6 +79,10 @@ public class User {
         this.uid = uid;
     }
 
+    public void setLastUpdate(Long lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -82,6 +92,7 @@ public class User {
         result.put("avatar",avatar);
         result.put("email",email);
         result.put("uid",uid);
+        result.put("lastUpdate",lastUpdate);
 
         return result;
     }
