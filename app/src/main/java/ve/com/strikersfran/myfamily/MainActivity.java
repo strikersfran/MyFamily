@@ -114,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
                                 mFragment = new ProfileFragment();
                                 //fragmentTransaction = true;
                                 break;
+                            case R.id.menu_opcion_solicitudes:
+                                mFragment = new SolicitudesFragment();
+                                break;
                         }
 
                         //menuItem.setChecked(false);

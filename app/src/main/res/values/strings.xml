@@ -10,6 +10,7 @@
     <string name="opcion_chat">Chat</string>
     <string name="opcion_mi_perfil">Mi Perfil</string>
     <string name="opcion_mi_familia">Mis Familiares</string>
+    <string name="opcion_solicitudes">Solicitudes</string>
     <string name="opcion_buscar">Buscar</string>
     <string name="opcion_invitar">Invitar</string>
     <string name="opcion_ajustes">Ajustes</string>
@@ -24,6 +25,7 @@
     <string name="opcion_ini_chat">Iniciar Chat</string>
     <string name="opcion_eliminar">Eliminar</string>
     <string name="opcion_ver_perfil">Ver Perfil</string>
+    <string name="opcion_aceptar">Aceptar</string>
 
     <string name="bienvenida">Bienvenidos a</string>
     <string name="login">Iniciar Sesión</string>

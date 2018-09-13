@@ -119,8 +119,9 @@ public class MiFamiliaBD {
     /*Clase para el helper de mi familia*/
     private static class MiFamiliaBDHelper extends SQLiteOpenHelper {
         // If you change the database schema, you must increment the database version.
-        static final int DATABASE_VERSION = 2;
-        static final String DATABASE_NAME = "MyFamily.db";
+        static final int DATABASE_VERSION = 1;
+        //para poder dejar una base de datos por cada usaurio iniciado la sesion
+        static final String DATABASE_NAME = "MyFamily.db_"+StaticConfig.UID;
 
         MiFamiliaBDHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);

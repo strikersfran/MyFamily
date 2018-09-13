@@ -126,6 +126,7 @@ public class MiFamiliaFragment extends Fragment {
                 .show();
 
         mDatabase.getReference().child("familiarByUsers").child(StaticConfig.UID)
+                .orderByChild("estatus").equalTo("aceptada")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -171,7 +172,6 @@ public class MiFamiliaFragment extends Fragment {
                                                     mf.setLastUpdate((Long) dataSnapshot1.child("lastUpdate").getValue());
                                                     mf.setEstatus(familiar.getEstatus());
                                                     mf.setParentesco("S/P");
-                                                    mf.setRating(3);//este campo debe desaparecer
 
                                                     //para guardar la lista de id de mis familiares
                                                     //listMiFamiliaID.add(familiar.getUid());
@@ -208,9 +208,103 @@ public class MiFamiliaFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                mProgresDialog.dismiss();
             }
         });
+    }
+
+    //para actualizar los familiares nuevos y datos de los actuales
+    public void updateFamiliar(){
+
+        //obtener la ultima fecha de actualizacion de la tabla en la base de datos
+
+
+        mDatabase.getReference().child("familiarByUsers").child(StaticConfig.UID)
+                .orderByChild("lastUpdate").equalTo("aceptada")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if (dataSnapshot.getValue() == null) {
+                            Log.e("CARGAR FAMILIAR","No se encontraron registros");
+                            mProgresDialog.dismiss();
+
+                        } else {
+                            mItems = new ArrayList();
+                            final List<ListFamiliar> familiarList = new ArrayList<>();
+
+                            for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                                //String uid = singleSnapshot.child("uid").getValue(String.class);
+                                //String estatus = singleSnapshot.child("estatus").getValue(String.class);
+                                familiarList.add(singleSnapshot.getValue(ListFamiliar.class)/*new ListFamiliar(uid,estatus)*/);
+
+                            }
+
+                            mDatabase.getReference().child("users")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            Iterable<DataSnapshot> list = dataSnapshot.getChildren();
+
+                                            // Getting current user Id
+                                            String uid = StaticConfig.UID;
+
+                                            // Filtrar solo mis familiares
+                                            List<MiFamilia> miFamiliaList = new ArrayList<>();
+                                            //listMiFamiliaID = new ArrayList<>();
+                                            for (DataSnapshot dataSnapshot1 : list) {
+                                                if (!dataSnapshot1.getKey().equals(uid)) {
+                                                    for(ListFamiliar familiar: familiarList){
+                                                        if(TextUtils.equals(familiar.getUid(),dataSnapshot1.getKey())){
+                                                            MiFamilia mf = new MiFamilia();
+                                                            mf.setUid(familiar.getUid());
+                                                            mf.setAvatar(dataSnapshot1.child("avatar").getValue().toString());
+                                                            mf.setNombre(dataSnapshot1.child("nombre").getValue().toString());
+                                                            mf.setPrimerApellido(dataSnapshot1.child("primerApellido").getValue().toString());
+                                                            mf.setSegundoApellido(dataSnapshot1.child("segundoApellido").getValue().toString());
+                                                            mf.setEmail(dataSnapshot1.child("email").getValue().toString());
+                                                            mf.setLastUpdate((Long) dataSnapshot1.child("lastUpdate").getValue());
+                                                            mf.setEstatus(familiar.getEstatus());
+                                                            mf.setParentesco("S/P");
+
+                                                            //para guardar la lista de id de mis familiares
+                                                            //listMiFamiliaID.add(familiar.getUid());
+                                                            miFamiliaList.add(mf);
+
+                                                            //para almacenar la lista de familiares en la db local
+                                                            dataListMiFamilia.getListMiFamilia().add(mf);
+                                                            MiFamiliaBD.getInstance(getContext()).addMiFamilia(mf);
+                                                        }
+                                                    }
+                                                }
+
+                                            }
+
+                                            mProgresDialog.dismiss();
+
+                                            // Crear un nuevo adaptador
+                                            adapter = new MiFamiliaAdapter(miFamiliaList);
+                                            recycler.setAdapter(adapter);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            mProgresDialog.dismiss();
+                                            new LovelyInfoDialog(context)
+                                                    .setTopColorRes(R.color.primary_color)
+                                                    .setTitle("Error")
+                                                    .setMessage("Algo no Salio mientras se cargaba tus familiares "+databaseError.getMessage())
+                                                    .show();
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        mProgresDialog.dismiss();
+                    }
+                });
     }
 
     @Override

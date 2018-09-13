@@ -20,6 +20,9 @@
             android:id="@+id/menu_opcion_mi_familia"
             android:icon="@drawable/ic_mi_familia"
             android:title="@string/opcion_mi_familia"></item>
+        <item
+            android:id="@+id/menu_opcion_solicitudes"
+            android:title="@string/opcion_solicitudes" />
     </group>
     <group android:checkableBehavior="single">
         <item

@@ -66,6 +66,9 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
                 //agregar el usaurio como familiar
                 String uid = holder.uid.getText().toString();
                 addFamiliar(uid,true,position);
+                holder.btnAgregar.setOnClickListener(null);
+                holder.btnAgregar.setBackgroundResource(R.drawable.search_text_border);
+                holder.btnAgregar.setImageResource(R.drawable.ic_agregar_familiar_on);
                 //Toast.makeText(context,"Boton Agregar",Toast.LENGTH_SHORT).show();
             }
         });
@@ -76,29 +79,11 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
         return items.size();
     }
 
-    public static class BuscarFamiliarViewHolder extends RecyclerView.ViewHolder{
-
-        public CircleImageView imagen;
-        public TextView nombre;
-        public TextView apellidos;
-        public ImageButton btnAgregar;
-        public EditText uid;
-
-        public BuscarFamiliarViewHolder(View v){
-            super(v);
-
-            imagen = (CircleImageView) v.findViewById(R.id.ls_imagen_user);
-            nombre = (TextView) v.findViewById(R.id.ls_nombre_user);
-            apellidos = (TextView) v.findViewById(R.id.ls_apellidos_user);
-            btnAgregar = (ImageButton) v.findViewById(R.id.ls_btn_agregar);
-            uid = (EditText) v.findViewById(R.id.lsf_uid_user);
-        }
-    }
     /*Esta funcion permite agregar un usuario como familiar de forma cruzada*/
     private void addFamiliar(final String idFamiliar, boolean isIdFriend, final int position) {
         if (idFamiliar != null) {
             if (isIdFriend) {
-                ListFamiliar familiar = new ListFamiliar(idFamiliar,"invitado");
+                ListFamiliar familiar = new ListFamiliar(idFamiliar,"enviada");
                 FirebaseDatabase.getInstance().getReference().child("familiarByUsers/" + StaticConfig.UID)
                         //.push().setValue(StaticConfig.UID)
                         //.child(idFamiliar).setValue("false")
@@ -123,19 +108,19 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
                             }
                         });
             } else {
-                ListFamiliar familiar = new ListFamiliar(StaticConfig.UID,"invitado");
+                ListFamiliar familiar = new ListFamiliar(StaticConfig.UID,"recibida");
                 FirebaseDatabase.getInstance().getReference().child("familiarByUsers/" + idFamiliar)
                         //.push().setValue(StaticConfig.UID)
                         //.child(StaticConfig.UID).setValue("false")
                         .push().setValue(familiar)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            addFamiliar(null, false,position);
-                        }
-                    }
-                })
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    addFamiliar(null, false,position);
+                                }
+                            }
+                        })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
@@ -159,9 +144,8 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
             mf.setSegundoApellido(items.get(position).getSegundoApellido());
             mf.setEmail(items.get(position).getEmail());
             mf.setLastUpdate(items.get(position).getLastUpdate());
-            mf.setEstatus("invitado");
+            mf.setEstatus("enviada");
             mf.setParentesco("S/P");
-            mf.setRating(0);//este campo debe desaparecer
 
             MiFamiliaBD.getInstance(context).addMiFamilia(mf);
             //notifyDataSetChanged();
@@ -172,6 +156,25 @@ public class BuscarFamiliarAdapter extends RecyclerView.Adapter<BuscarFamiliarAd
                     .setTitle("Felicidades!!")
                     .setMessage("Se envió correctamente la notificación de amistad a "+items.get(position).getNombre())
                     .show();
+        }
+    }
+
+    public static class BuscarFamiliarViewHolder extends RecyclerView.ViewHolder{
+
+        public CircleImageView imagen;
+        public TextView nombre;
+        public TextView apellidos;
+        public ImageButton btnAgregar;
+        public EditText uid;
+
+        public BuscarFamiliarViewHolder(View v){
+            super(v);
+
+            imagen = (CircleImageView) v.findViewById(R.id.ls_imagen_user);
+            nombre = (TextView) v.findViewById(R.id.ls_nombre_user);
+            apellidos = (TextView) v.findViewById(R.id.ls_apellidos_user);
+            btnAgregar = (ImageButton) v.findViewById(R.id.ls_btn_agregar);
+            uid = (EditText) v.findViewById(R.id.lsf_uid_user);
         }
     }
 }

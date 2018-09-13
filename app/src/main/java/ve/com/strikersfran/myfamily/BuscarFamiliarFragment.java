@@ -73,8 +73,10 @@ public class BuscarFamiliarFragment extends Fragment {
 
         if (dataListMiFamilia == null) {
             dataListMiFamilia = MiFamiliaBD.getInstance(getContext()).getListMiFamilia();
+            listMiFamiliaID = new ArrayList<>();
+            listMiFamiliaID.add(StaticConfig.UID);
             if (dataListMiFamilia.getListMiFamilia().size() > 0) {
-                listMiFamiliaID = new ArrayList<>();
+
                 for (MiFamilia familia : dataListMiFamilia.getListMiFamilia()) {
                     listMiFamiliaID.add(familia.getUid());
                 }
@@ -117,7 +119,7 @@ public class BuscarFamiliarFragment extends Fragment {
                                     String uid = singleSnapshot.child("uid").getValue(String.class);
 
                                     //para evitar listar personas que ya son mis familiares
-                                    if(!listMiFamiliaID.contains(uid)&&!uid.equals(StaticConfig.UID)) {
+                                    if(!listMiFamiliaID.contains(uid)/*&&!uid.equals(StaticConfig.UID)*/) {
                                         User user = new User();
                                         user.setNombre(singleSnapshot.child("nombre").getValue(String.class));
                                         user.setPrimerApellido(singleSnapshot.child("primerApellido").getValue(String.class));

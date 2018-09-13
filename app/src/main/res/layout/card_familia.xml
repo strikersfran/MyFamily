@@ -40,6 +40,18 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/apellidos_familiar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:text="@string/usaurio_test"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
                 android:id="@+id/parentesco_familia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,15 +61,6 @@
                 android:text="TextView"
                 android:textAlignment="center"
                 android:textSize="14sp" />
-
-            <RatingBar
-                android:id="@+id/rating_familia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:numStars="3"
-                android:rating="2"
-                android:stepSize="1" />
 
             <TextView
                 android:id="@+id/estatus_familia"

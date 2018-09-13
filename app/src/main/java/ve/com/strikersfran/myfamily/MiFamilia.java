@@ -7,7 +7,6 @@ public class MiFamilia {
     private String primerApellido;
     private String segundoApellido;
     private String parentesco;
-    private int rating;
     private String estatus;
     private String uid;
     private Long lastUpdate;
@@ -17,14 +16,13 @@ public class MiFamilia {
     }
 
     public MiFamilia(String avatar, String nombre, String primerApellido, String segundoApellido,
-                     String parentesco, int rating, String estatus, String uid, Long lastUpdate,
+                     String parentesco, String estatus, String uid, Long lastUpdate,
                      String email) {
         this.avatar = avatar;
         this.nombre = nombre;
         this.primerApellido = primerApellido;
         this.segundoApellido = segundoApellido;
         this.parentesco = parentesco;
-        this.rating = rating;
         this.estatus = estatus;
         this.uid = uid;
         this.lastUpdate = lastUpdate;
@@ -41,10 +39,6 @@ public class MiFamilia {
 
     public String getParentesco() {
         return parentesco;
-    }
-
-    public int getRating() {
-        return rating;
     }
 
     public String getEstatus() {
@@ -81,10 +75,6 @@ public class MiFamilia {
 
     public void setParentesco(String parentesco) {
         this.parentesco = parentesco;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
     }
 
     public void setEstatus(String estatus) {

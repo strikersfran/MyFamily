@@ -44,7 +44,7 @@ public class MiFamiliaAdapter extends RecyclerView.Adapter<MiFamiliaAdapter.MiFa
         holder.imagenFamilia.setImageBitmap(ImageUtils.setImageAvatar(context,items.get(position).getAvatar()));
         holder.nameFamilia.setText(items.get(position).getNombre());
         holder.parentescoFamilia.setText(items.get(position).getParentesco());
-        holder.ratingFamilia.setRating(items.get(position).getRating());
+        holder.apellidosFamilia.setText(items.get(position).getPrimerApellido()+" "+items.get(position).getSegundoApellido());
         holder.estatusFamilia.setText(items.get(position).getEstatus());
 
     }
@@ -60,7 +60,7 @@ public class MiFamiliaAdapter extends RecyclerView.Adapter<MiFamiliaAdapter.MiFa
         public ImageView imagenFamilia;
         public TextView nameFamilia;
         public TextView parentescoFamilia;
-        public RatingBar ratingFamilia;
+        public TextView apellidosFamilia;
         public TextView estatusFamilia;
 
         public MiFamiliaViewHolder(View itemView) {
@@ -70,7 +70,7 @@ public class MiFamiliaAdapter extends RecyclerView.Adapter<MiFamiliaAdapter.MiFa
             imagenFamilia = (ImageView) itemView.findViewById(R.id.imagen_familia);
             nameFamilia = (TextView) itemView.findViewById(R.id.name_familia);
             parentescoFamilia = (TextView) itemView.findViewById(R.id.parentesco_familia);
-            ratingFamilia = (RatingBar) itemView.findViewById(R.id.rating_familia);
+            apellidosFamilia = (TextView) itemView.findViewById(R.id.apellidos_familiar);
             estatusFamilia = (TextView) itemView.findViewById(R.id.estatus_familia);
 
         }
