@@ -26,8 +26,10 @@ import com.yarolegovich.lovelydialog.LovelyProgressDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import ve.com.strikersfran.myfamily.data.SolicitudesBD;
 import ve.com.strikersfran.myfamily.data.StaticConfig;
 import ve.com.strikersfran.myfamily.model.ListFamiliar;
+import ve.com.strikersfran.myfamily.model.ListMiFamilia;
 
 
 /**
@@ -42,6 +44,7 @@ public class SolicitudesFragment extends Fragment {
     private LovelyProgressDialog mProgresDialog;
     private Context context;
     private List mItems;
+    private ListMiFamilia dataListSolicitudes = null;
 
     public SolicitudesFragment() {
         // Required empty public constructor
@@ -65,7 +68,20 @@ public class SolicitudesFragment extends Fragment {
         lManager = new LinearLayoutManager(context);
         recycler.setLayoutManager(lManager);
 
-        getSolicitudes();
+        dataListSolicitudes = SolicitudesBD.getInstance(getContext()).getListSolicitudes();
+        if (dataListSolicitudes.getListMiFamilia().size() > 0) {
+
+            // Crear un nuevo adaptador
+            adapter = new SolicitudesAdapter(dataListSolicitudes.getListMiFamilia());
+            recycler.setAdapter(adapter);
+            //detectFriendOnline.start();
+        }
+        else{
+            getSolicitudes();
+        }
+
+        //se debe buscar solo las solicitudes que no han sido cargadas en la base de datos local
+        //esto en funcion al last update realizado en la tabla LastUpdateBD
 
         return myFragmentView;
     }
@@ -105,7 +121,7 @@ public class SolicitudesFragment extends Fragment {
                                             String uid = StaticConfig.UID;
 
                                             // Filtrar solo mis familiares
-                                            List<MiFamilia> miFamiliaList = new ArrayList<>();
+                                            List<MiFamilia> solicitudesList = new ArrayList<>();
                                             //listMiFamiliaID = new ArrayList<>();
                                             for (DataSnapshot dataSnapshot1 : list) {
                                                 if (!dataSnapshot1.getKey().equals(uid)) {
@@ -124,11 +140,11 @@ public class SolicitudesFragment extends Fragment {
 
                                                             //para guardar la lista de id de mis familiares
                                                             //listMiFamiliaID.add(familiar.getUid());
-                                                            miFamiliaList.add(mf);
+                                                            solicitudesList.add(mf);
 
-                                                            //para almacenar la lista de familiares en la db local
-                                                            //dataListMiFamilia.getListMiFamilia().add(mf);
-                                                            ///MiFamiliaBD.getInstance(getContext()).addMiFamilia(mf);
+                                                            //para almacenar la lista de solicitudes en la db local
+                                                            dataListSolicitudes.getListMiFamilia().add(mf);
+                                                            SolicitudesBD.getInstance(getContext()).addSolicitudes(mf);
                                                         }
                                                     }
                                                 }
@@ -138,7 +154,7 @@ public class SolicitudesFragment extends Fragment {
                                             mProgresDialog.dismiss();
 
                                             // Crear un nuevo adaptador
-                                            adapter = new SolicitudesAdapter(miFamiliaList);
+                                            adapter = new SolicitudesAdapter(solicitudesList);
                                             recycler.setAdapter(adapter);
                                         }
 
@@ -157,7 +173,12 @@ public class SolicitudesFragment extends Fragment {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        mProgresDialog.dismiss();
+                        new LovelyInfoDialog(context)
+                                .setTopColorRes(R.color.primary_color)
+                                .setTitle("Error")
+                                .setMessage("Algo no Salio bien al buscar las solicitudes "+databaseError.getMessage())
+                                .show();
                     }
                 });
     }

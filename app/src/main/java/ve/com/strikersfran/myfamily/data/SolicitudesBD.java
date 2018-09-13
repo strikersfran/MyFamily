@@ -8,26 +8,25 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import ve.com.strikersfran.myfamily.MiFamilia;
-import ve.com.strikersfran.myfamily.model.ListFamiliar;
 import ve.com.strikersfran.myfamily.model.ListMiFamilia;
 
-public class MiFamiliaBD {
+public class SolicitudesBD {
 
-    private static MiFamiliaBDHelper mDbHelper = null;
-    private static MiFamiliaBD instance = null;
+    private static SolicitudesBDHelper mDbHelper = null;
+    private static SolicitudesBD instance = null;
 
-    public MiFamiliaBD() {
+    public SolicitudesBD() {
     }
 
-    public static MiFamiliaBD getInstance(Context context) {
+    public static SolicitudesBD getInstance(Context context) {
         if (instance == null) {
-            instance = new MiFamiliaBD();
-            mDbHelper = new MiFamiliaBDHelper(context);
+            instance = new SolicitudesBD();
+            mDbHelper = new SolicitudesBDHelper(context);
         }
         return instance;
     }
 
-    public long addMiFamilia(MiFamilia familia) {
+    public long addSolicitudes(MiFamilia familia) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -50,43 +49,43 @@ public class MiFamiliaBD {
         db.execSQL(SQL_CREATE_ENTRIES);
     }
 
-    public void addListMiFamilia(ListMiFamilia listMiFamilia){
-        for(MiFamilia familia: listMiFamilia.getListMiFamilia()){
-            addMiFamilia(familia);
+    public void addListSolicitudes(ListMiFamilia listSolicitud){
+        for(MiFamilia solicitud: listSolicitud.getListMiFamilia()){
+            addSolicitudes(solicitud);
         }
     }
 
-    public ListMiFamilia getListMiFamilia() {
-        ListMiFamilia listMiFamilia = new ListMiFamilia();
+    public ListMiFamilia getListSolicitudes() {
+        ListMiFamilia listSolicitudes = new ListMiFamilia();
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         // Define a projection that specifies which columns from the database
 // you will actually use after this query.
         try {
             Cursor cursor = db.rawQuery("select * from " + FeedEntry.TABLE_NAME, null);
             while (cursor.moveToNext()) {
-                MiFamilia familia = new MiFamilia();
-                familia.setUid(cursor.getString(0));
-                familia.setNombre(cursor.getString(1));
-                familia.setPrimerApellido(cursor.getString(2));
-                familia.setSegundoApellido(cursor.getString(3));
-                familia.setEmail(cursor.getString(4));
-                familia.setParentesco(cursor.getString(5));
-                familia.setAvatar(cursor.getString(6));
-                familia.setEstatus(cursor.getString(7));
-                familia.setLastUpdate(cursor.getLong(8));
+                MiFamilia solicitud = new MiFamilia();
+                solicitud.setUid(cursor.getString(0));
+                solicitud.setNombre(cursor.getString(1));
+                solicitud.setPrimerApellido(cursor.getString(2));
+                solicitud.setSegundoApellido(cursor.getString(3));
+                solicitud.setEmail(cursor.getString(4));
+                solicitud.setParentesco(cursor.getString(5));
+                solicitud.setAvatar(cursor.getString(6));
+                solicitud.setEstatus(cursor.getString(7));
+                solicitud.setLastUpdate(cursor.getLong(8));
 
-                listMiFamilia.getListMiFamilia().add(familia);
+                listSolicitudes.getListMiFamilia().add(solicitud);
             }
             cursor.close();
         }catch (Exception e){
             return new ListMiFamilia();
         }
-        return listMiFamilia;
+        return listSolicitudes;
     }
 
     /* Inner class that defines the table contents */
     public static class FeedEntry implements BaseColumns {
-        static final String TABLE_NAME = "mifamilia";
+        static final String TABLE_NAME = "solicitudes";
         static final String COLUMN_NAME_ID = "uid";
         static final String COLUMN_NAME_NAME = "nombre";
         static final String COLUMN_NAME_PAPELLIDO = "primer_apellido";
@@ -116,14 +115,14 @@ public class MiFamiliaBD {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME;
 
-    /*Clase para el helper de mi familia*/
-    private static class MiFamiliaBDHelper extends SQLiteOpenHelper {
+    /*Clase para el helper de de solicitudes*/
+    private static class SolicitudesBDHelper extends SQLiteOpenHelper {
         // If you change the database schema, you must increment the database version.
         static final int DATABASE_VERSION = 1;
         //para poder dejar una base de datos por cada usaurio iniciado la sesion
-        static final String DATABASE_NAME = "MiFamilia.db_"+StaticConfig.UID;
+        static final String DATABASE_NAME = "Solicitudes.db_"+StaticConfig.UID;
 
-        MiFamiliaBDHelper(Context context) {
+        SolicitudesBDHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
